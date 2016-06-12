@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -25,16 +26,18 @@ public class MapViewBase extends StateViewBase implements IStateView, InputProce
 	public MapViewBase(MyGdxGame game) {
 		super(game);
 		ch = GlobalManager.hero;
-	    Gdx.input.setInputProcessor(this);
-	    float w = Gdx.graphics.getWidth();
-	    float h = Gdx.graphics.getHeight();
-	    camera = new OrthographicCamera();
-	    camera.setToOrtho(false, w, h);
-	    
+		Gdx.input.setInputProcessor(this);
+		float w = Gdx.graphics.getWidth();
+		float h = Gdx.graphics.getHeight();
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, w, h);
+
 		this.onEnter();
 
 		tiledMapRenderer = new OrthogonalTiledMapRendererWithCharacters(tiledMap);
-	    tiledMapRenderer.addCharacter(ch);
+		tiledMapRenderer.addCharacter(ch);
+		MapLayer objectLayer = tiledMap.getLayers().get("Collisions");
+		collisionObjecs = objectLayer.getObjects();
 	}
 
 	Character ch;
@@ -42,106 +45,57 @@ public class MapViewBase extends StateViewBase implements IStateView, InputProce
 	OrthographicCamera camera;
 	OrthogonalTiledMapRendererWithCharacters tiledMapRenderer;
 	int eventMap[][];
-	
+	MapObjects collisionObjecs;
+
 	@Override
-	public void update(float elapsedTime) {	
-		ch.update(elapsedTime);
-	    MapLayer objectLayer = tiledMap.getLayers().get("Collisions");
-	    Rectangle chRect = new Rectangle();
-	    chRect.x = ch.x;
-	    chRect.y = ch.y;
-	    chRect.width = ch.getWidth();
-	    chRect.height = ch.getHeight();
-		for (MapObject obj : objectLayer.getObjects()) {
-			if (obj instanceof RectangleMapObject) {
-				Rectangle rect = ((RectangleMapObject) obj).getRectangle();
-			    switch (ch.state) {
-			    case 11:
-			    	if (this.overLape(rect, chRect)) {
-			    		ch.x = (int) (rect.x + rect.width);
-			    	}
-			    	break;
-			    case 21:
-			    	if (this.overLape(rect, chRect)) {
-			    		ch.x = (int)(rect.x - ch.getWidth()) ;
-			    	}
-			    	break;
-			    case 31:
-			    	if (this.overLape(rect, chRect)) {
-			    		ch.y = (int)(rect.y + rect.height);
-			    	}
-			    	break;
-			    case 41:
-			    	if (this.overLape(rect, chRect)) {
-			    		ch.y = (int)(rect.y - ch.getHeight());
-			    	}
-			    	break;
-			    }	
-			}
-		}
-	    
+	public void update(float elapsedTime) {
+		ch.update(elapsedTime, collisionObjecs);
 		camera.position.x = ch.x;
 		camera.position.y = ch.y;
-		
+
 	}
 
 	@Override
 	public void render(SpriteBatch batch) {
-		
+
 		camera.update();
 		tiledMapRenderer.setView(camera);
 		tiledMapRenderer.render();
-		triggerEvnt(EventManager.TYPE_AUTO);
+		// triggerEvnt(EventManager.TYPE_AUTO);
 	}
 
 	@Override
 	public void onEnter() {
-		ch.y = 352;
-	    ch.x = 224;
-	    tiledMap = new TmxMapLoader().load("map/room1.tmx");
-	    eventMap = EventMapRes.getEventMap("room1");
+		ch.setCell(9, 6);
+		tiledMap = new TmxMapLoader().load("map/room1.tmx");
+		eventMap = EventMapRes.getEventMap("room1");
 	}
 
 	@Override
 	public void onExit() {
-	    tiledMap.dispose();	
+		tiledMap.dispose();
 	}
-	
-	private boolean overLape(Rectangle rectA, Rectangle rectB ) {
-	   float minx = Math.max(rectA.x, rectB.x);
-	   float miny = Math.max(rectA.y, rectB.y);
-	   float maxx = Math.min(rectA.x + rectA.width, rectB.x + rectB.width);
-	   float maxy = Math.min(rectA.y + rectA.height, rectB.y + rectB.height);
-	   
-	   if (minx >= maxx || miny >= maxy) {
-		   return false;
-	   } else {
-		   return true;
-	   }
-	}
-	
+
 	private void triggerEvnt(int type) {
 		if (eventMap == null) {
 			return;
 		}
-		int x = (int) (ch.x / Config.CELLWIDTH);
-		int y = (int) (ch.y / Config.CELLWIDTH);
-		int eventcode = eventMap[y][x];
-		if(eventcode == 0) {
+		int eventcode = eventMap[ch.cellY][ch.cellX];
+		if (eventcode == 0) {
 			return;
 		}
-		
-		switch(type) {
+
+		switch (type) {
 		case EventManager.TYPE_KEY:
-			if (eventcode /100 != 1) {
+			if (eventcode / 100 != 1) {
 				return;
-			} 
+			}
 			break;
 		case EventManager.TYPE_AUTO:
 			if (eventcode / 100 != 2) {
 				return;
 			}
-			eventMap[y][x] = 0;
+			eventMap[ch.cellY][ch.cellX] = 0;
 			break;
 		}
 		EventManager.excuteEvent(eventcode);
@@ -149,12 +103,12 @@ public class MapViewBase extends StateViewBase implements IStateView, InputProce
 
 	@Override
 	public boolean keyDown(int keycode) {
-		switch(keycode) {
-		case Keys.Z :
-		    this.triggerEvnt(EventManager.TYPE_KEY);	
+		switch (keycode) {
+		case Keys.Z:
+			this.triggerEvnt(EventManager.TYPE_KEY);
 			break;
 		}
-		
+
 		return true;
 	}
 
@@ -199,6 +153,5 @@ public class MapViewBase extends StateViewBase implements IStateView, InputProce
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
 
 }

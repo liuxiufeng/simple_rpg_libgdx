@@ -1,91 +1,160 @@
 package com.mygdx.model;
 
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.utils.Config;
+import com.mygdx.utils.RectUtils;
 
 public class Character {
-    private int speed;
-    public int x;
-    public int y;
-    /*
-     * 10 ×óÍ£, 11 ×óÅÜ, 20 ÓÒÍ££¬ 21 ÓÒÅÜ£¬ 40£¬ÉÏÍ££¬ 41ÉÏÅÜ£¬ 30 ÏÂÍ££¬ 31£¬ ÏÂÅÜ
-     */
-    public int state;
-    private Animation left;
-    private Animation right;
-    private Animation up;
-    private Animation down;
-    private float stateTime = 0;
-    private float width;
-	private float height;
-    
-    public Character() {
-    	this.speed = 200;
-    	this.state = 30;
-    }
-    
-    public void setSize(float width, float height) {
-    	this.width = width;
-    	this.height = height;
-    }
+	private final int NOTMOVE = -3333;
+	private int speed;
+	public float x;
+	public float y;
+	/*
+	 * æ‰€åœ¨çš„cellä¸Š
+	 */
+	public int cellX;
+	public int cellY;
 
-    public void update(float elapsedTime) {
-    	stateTime += elapsedTime;
-    	boolean isPressed = false;
-    	int changeState = 31;
-    	if (Gdx.input.isKeyPressed(Keys.UP)) {
-            changeState = 41;
-            isPressed = true;
-            y+= speed * elapsedTime;
-    	} else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
-            changeState = 31;
-            isPressed = true;
-            y-= speed* elapsedTime;
-    	} else if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-            changeState = 11;
-            isPressed = true;
-            x-= speed* elapsedTime;
-    	} else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-            changeState = 21;
-            isPressed = true;
-            x+= speed* elapsedTime;
-    	}
-    	
-    	if (isPressed) {
-    		if (changeState != this.state) {
-    			this.state = changeState;
-    			this.stateTime = 0;
-    		}
-    	} else {
-    		this.state = (this.state / 10) * 10;
-    	}
-    	
-    }
-    
-    public TextureRegion getFrame(){
-    	switch (this.state) {
-    	case 10:
-    		return left.getKeyFrame(0);
-    	case 11:
-    		return left.getKeyFrame(stateTime, true);
-    	case 20:
-    		return right.getKeyFrame(0);
-    	case 21:
-    		return right.getKeyFrame(stateTime, true);
-    	case 30:
-    		return up.getKeyFrame(0);
-    	case 31:
-    		return up.getKeyFrame(stateTime, true);
-    	case 40:
-    		return down.getKeyFrame(0);
-    	case 41:
-    		return down.getKeyFrame(stateTime, true);
-    	}
+	/**
+	 * ç›®æ ‡cell,ä¸ç§»åŠ¨æ—¶ä¸º-3333;
+	 */
+	public int targetX;
+	public int targetY;
+	/*
+	 * *0 åœ *1 èµ° 1* å·¦ ï¼Œ2*å³ï¼Œ 3*ä¸‹ ï¼Œ4*ä¸Š
+	 */
+	public int state;
+	private Animation left;
+	private Animation right;
+	private Animation up;
+	private Animation down;
+	private float stateTime = 5;
+	private float width;
+	private float height;
+
+	public Character() {
+		this.speed = 10;
+		this.state = 30;
+		this.setTarget(NOTMOVE, NOTMOVE);
+	}
+
+	public void setSize(float width, float height) {
+		this.width = width;
+		this.height = height;
+	}
+
+	public void setCell(int cellX, int cellY) {
+		this.cellX = cellX;
+		this.cellY = cellY;
+		this.x = cellX * Config.CELLWIDTH;
+		this.y = cellY * Config.CELLWIDTH;
+	}
+	
+	public void setTarget(int cellX, int cellY) {
+		this.targetX = cellX;
+		this.targetY = cellY;
+	}
+
+	public void update(float elapsedTime, MapObjects mapObjects) {
+		stateTime += elapsedTime;
+		boolean isPressed = false;
+		int changeState = 0;
+		if (this.targetX == this.NOTMOVE && this.targetY == this.NOTMOVE) {
+			if (Gdx.input.isKeyPressed(Keys.UP)) {
+				changeState = 41;
+				isPressed = true;
+				this.setTarget(this.cellX, this.cellY + 1);
+			} else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+				changeState = 31;
+				isPressed = true;
+				this.setTarget(this.cellX, this.cellY - 1);
+			} else if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+				changeState = 11;
+				isPressed = true;
+				this.setTarget(this.cellX - 1, this.cellY);
+			} else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+				changeState = 21;
+				isPressed = true;
+				this.setTarget(this.cellX + 1, this.cellY);
+			}
+			
+			if (this.targetX != this.NOTMOVE && this.targetY != this.NOTMOVE) {
+				Rectangle chRect = new Rectangle();
+			    chRect.x = this.targetX * Config.CELLWIDTH;
+			    chRect.y = this.targetY * Config.CELLWIDTH;
+			    chRect.width = this.getWidth();
+			    chRect.height = this.getHeight();
+				for (MapObject obj: mapObjects) {
+					if (obj instanceof RectangleMapObject) {
+						Rectangle rect = ((RectangleMapObject) obj).getRectangle();
+						if (RectUtils.isOverlap(chRect, rect)) {
+							this.setTarget(NOTMOVE, NOTMOVE);
+						}
+					}
+				}
+			}
+			
+		} else {
+			isPressed = true;
+			float per = (stateTime / Config.FRAMETIME)/this.speed;
+			if (per > 1) {
+				per = 1;
+			}
+			this.x = this.cellX * Config.CELLWIDTH + Config.CELLWIDTH *(this.targetX - this.cellX) * per ;
+			this.y = this.cellY * Config.CELLWIDTH + Config.CELLWIDTH *(this.targetY - this.cellY) * per;
+			System.out.println(String.format("cellY:%d targetY:%d", this.cellY, this.targetY));
+			System.out.println(String.format("pos_y:%f target_y:%f", this.y, this.targetY * Config.CELLWIDTH));
+			if (this.x == this.targetX * Config.CELLWIDTH &&
+					this.y == this.targetY * Config.CELLWIDTH
+					) {
+				this.setCell(targetX, targetY);
+				this.setTarget(NOTMOVE, NOTMOVE);
+				stateTime = 0;
+			}
+		}
+
+		if (isPressed) {
+			if (changeState != 0 && changeState != this.state) {
+				this.state = changeState;
+				this.stateTime = 0;
+			}
+		} else {
+			this.state = (this.state / 10) * 10;
+		}
+
+	}
+
+	public TextureRegion getFrame() {
+		switch (this.state) {
+		case 10:
+			return left.getKeyFrame(0);
+		case 11:
+			return left.getKeyFrame(stateTime, true);
+		case 20:
+			return right.getKeyFrame(0);
+		case 21:
+			return right.getKeyFrame(stateTime, true);
+		case 30:
+			return up.getKeyFrame(0);
+		case 31:
+			return up.getKeyFrame(stateTime, true);
+		case 40:
+			return down.getKeyFrame(0);
+		case 41:
+			return down.getKeyFrame(stateTime, true);
+		}
 		return null;
-    }
-    
+	}
+
 	public Animation getRight() {
 		return right;
 	}
@@ -133,6 +202,5 @@ public class Character {
 	public void setHeight(float height) {
 		this.height = height;
 	}
-    
 
 }

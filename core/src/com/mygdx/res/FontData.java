@@ -34,8 +34,9 @@ public class FontData {
     	.append("猖兜孵痼盥曝泣絮韵眷旷噢参栖盏鳌溅煎校榴暮琪淆陛巢哒吼槐唧其沛乞蜀蜇赚捍铰幂尧咒耽叮褂焕煞雹搓釜铬拣募淹瑰鲢茄灼邹躬觉娇焉彰鹤琳沦畔惹庶毙皖邢禹渍绷窜翘淫箪陌膊鞑咳玫巫拂蕉澜赎绥锄囱赌颊缕寅躁")
     	.append("稚庚苟氦魁珊蜕蛭酌逗闺蔓撇豌朕缉襟镍桅荧侄卒佃瞿娶饪耸乍靶痴靖扛筐韶嚣崔蓿岔氘娥剿霖喃搪雍裳撰豹骏慷")
     	.append("橙鸽")
-    	.append("3124567890")
-    	.append("，。");
+    	.append("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890\"!`?'.,;:()[]{}<>|/@\\^$-%+=#_&~*")
+    	.append("。，？！（）")
+    	;
 		return strBuilder.toString();
     }
 }

@@ -5,7 +5,7 @@
         "name": "铃仙", 
         "leftimage": "char/reisen.png", 
         "sound": "", 
-        "context": "描下线再试试配色，我这垃圾显示屏不适合画画，这TM，1-6都能劝退，不是很科学。。", 
+        "context": "描下线再试试配色，我这垃圾显示屏不适合画画，这TM1-6都能劝退,不是很科学。。0123456789", 
         "next": 1
     },
     
@@ -15,7 +15,7 @@
         "name": "铃仙", 
         "leftimage": "char/reisen.png", 
         "sound": "", 
-        "context": "心机心机猫!", 
+        "context": "（）", 
         "next": "-1"
     }
 ]

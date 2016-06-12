@@ -14,7 +14,7 @@ public class FontUtils {
 			FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("data/fonts/MSYHBD.TTF"));
 			FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 			parameter.size = 24;
-			parameter.characters = new FontData().create() + FreeTypeFontGenerator.DEFAULT_CHARS;
+			parameter.characters = new FontData().create();
 			bitmapFont = generator.generateFont(parameter); 
 			generator.dispose();
 		}
