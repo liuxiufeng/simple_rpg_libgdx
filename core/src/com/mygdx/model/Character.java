@@ -1,7 +1,5 @@
 package com.mygdx.model;
 
-import java.util.List;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -37,7 +35,7 @@ public class Character {
 	private Animation right;
 	private Animation up;
 	private Animation down;
-	private float stateTime = 5;
+	private float stateTime = 0;
 	private float width;
 	private float height;
 
@@ -58,7 +56,7 @@ public class Character {
 		this.x = cellX * Config.CELLWIDTH;
 		this.y = cellY * Config.CELLWIDTH;
 	}
-	
+
 	public void setTarget(int cellX, int cellY) {
 		this.targetX = cellX;
 		this.targetY = cellY;
@@ -68,6 +66,13 @@ public class Character {
 		stateTime += elapsedTime;
 		boolean isPressed = false;
 		int changeState = 0;
+
+		if (Gdx.input.isKeyPressed(Keys.X)) {
+			this.speed = 5;
+		} else {
+			this.speed = 10;
+		}
+		
 		if (this.targetX == this.NOTMOVE && this.targetY == this.NOTMOVE) {
 			if (Gdx.input.isKeyPressed(Keys.UP)) {
 				changeState = 41;
@@ -86,14 +91,14 @@ public class Character {
 				isPressed = true;
 				this.setTarget(this.cellX + 1, this.cellY);
 			}
-			
+
 			if (this.targetX != this.NOTMOVE && this.targetY != this.NOTMOVE) {
 				Rectangle chRect = new Rectangle();
-			    chRect.x = this.targetX * Config.CELLWIDTH;
-			    chRect.y = this.targetY * Config.CELLWIDTH;
-			    chRect.width = this.getWidth();
-			    chRect.height = this.getHeight();
-				for (MapObject obj: mapObjects) {
+				chRect.x = this.targetX * Config.CELLWIDTH;
+				chRect.y = this.targetY * Config.CELLWIDTH;
+				chRect.width = this.getWidth();
+				chRect.height = this.getHeight();
+				for (MapObject obj : mapObjects) {
 					if (obj instanceof RectangleMapObject) {
 						Rectangle rect = ((RectangleMapObject) obj).getRectangle();
 						if (RectUtils.isOverlap(chRect, rect)) {
@@ -102,20 +107,16 @@ public class Character {
 					}
 				}
 			}
-			
+
 		} else {
 			isPressed = true;
-			float per = (stateTime / Config.FRAMETIME)/this.speed;
+			float per = (stateTime / Config.FRAMETIME) / this.speed;
 			if (per > 1) {
 				per = 1;
 			}
-			this.x = this.cellX * Config.CELLWIDTH + Config.CELLWIDTH *(this.targetX - this.cellX) * per ;
-			this.y = this.cellY * Config.CELLWIDTH + Config.CELLWIDTH *(this.targetY - this.cellY) * per;
-			System.out.println(String.format("cellY:%d targetY:%d", this.cellY, this.targetY));
-			System.out.println(String.format("pos_y:%f target_y:%f", this.y, this.targetY * Config.CELLWIDTH));
-			if (this.x == this.targetX * Config.CELLWIDTH &&
-					this.y == this.targetY * Config.CELLWIDTH
-					) {
+			this.x = this.cellX * Config.CELLWIDTH + Config.CELLWIDTH * (this.targetX - this.cellX) * per;
+			this.y = this.cellY * Config.CELLWIDTH + Config.CELLWIDTH * (this.targetY - this.cellY) * per;
+			if (this.x == this.targetX * Config.CELLWIDTH && this.y == this.targetY * Config.CELLWIDTH) {
 				this.setCell(targetX, targetY);
 				this.setTarget(NOTMOVE, NOTMOVE);
 				stateTime = 0;

@@ -61,12 +61,12 @@ public class MapViewBase extends StateViewBase implements IStateView, InputProce
 		camera.update();
 		tiledMapRenderer.setView(camera);
 		tiledMapRenderer.render();
-		// triggerEvnt(EventManager.TYPE_AUTO);
+		triggerEvnt(EventManager.TYPE_AUTO);
 	}
 
 	@Override
 	public void onEnter() {
-		ch.setCell(9, 6);
+		ch.setCell(6, 11);
 		tiledMap = new TmxMapLoader().load("map/room1.tmx");
 		eventMap = EventMapRes.getEventMap("room1");
 	}
