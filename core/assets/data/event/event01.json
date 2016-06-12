@@ -52,7 +52,7 @@
         "id": 5, 
         "type": "talk", 
         "name": "玛丽", 
-        "leftimage": "char/mary_shock.png", 
+        "leftimage": "char/mary_cap_shock.png", 
         "sound": "", 
         "context": "故事还没开始女主竟然就挂了", 
         "next": 6
@@ -72,7 +72,7 @@
         "id": 7, 
         "type": "talk", 
         "name": "玛丽", 
-        "leftimage": "char/mary_shock.png", 
+        "leftimage": "char/mary_cap_shock.png", 
         "sound": "", 
         "context": "吸血鬼睡了五六年也会饿死的吧，五六年后老邮局还没被强拆嘛，感觉一一吐槽就输了", 
         "next": -1
