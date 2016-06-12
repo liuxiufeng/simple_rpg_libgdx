@@ -137,19 +137,19 @@ public class Character {
 	public TextureRegion getFrame() {
 		switch (this.state) {
 		case 10:
-			return left.getKeyFrame(0);
+			return left.getKeyFrames()[1];
 		case 11:
 			return left.getKeyFrame(stateTime, true);
 		case 20:
-			return right.getKeyFrame(0);
+			return right.getKeyFrames()[1];
 		case 21:
 			return right.getKeyFrame(stateTime, true);
 		case 30:
-			return up.getKeyFrame(0);
+			return up.getKeyFrames()[1];
 		case 31:
 			return up.getKeyFrame(stateTime, true);
 		case 40:
-			return down.getKeyFrame(0);
+			return down.getKeyFrames()[2];
 		case 41:
 			return down.getKeyFrame(stateTime, true);
 		}

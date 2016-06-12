@@ -23,7 +23,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		viewStack.push(new LogoView(this));
 		GlobalManager.game = this;
 		Character ch = new Character();
-		CharRes.getReisen(ch);
+		CharRes.getMary(ch);
 		GlobalManager.hero = ch;
 	}
 
