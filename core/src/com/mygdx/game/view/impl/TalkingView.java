@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.view.IStateView;
 import com.mygdx.game.view.StateViewBase;
+import com.mygdx.utils.AssetManagerUtils;
 import com.mygdx.utils.Config;
 import com.mygdx.utils.FontUtils;
 import com.mygdx.utils.TextureFlyweightFactory;
@@ -114,7 +115,7 @@ public class TalkingView extends StateViewBase implements IStateView, InputProce
 			pixmap.dispose();
 		}
 		ttDilogBox = new Texture("widgets/dialog1.png");
-		font = FontUtils.getFont();
+		font = AssetManagerUtils.getInstance().getFont24();
 		show = new ArrayList<String>();
 		this.name = "";
 
