@@ -22,6 +22,7 @@ import com.mygdx.game.view.IStateView;
 import com.mygdx.game.view.StateViewBase;
 import com.mygdx.utils.Config;
 import com.mygdx.utils.FontUtils;
+import com.mygdx.utils.TextureFlyweightFactory;
 
 public class TalkingView extends StateViewBase implements IStateView, InputProcessor {
 	private final int maxLen = 30;
@@ -125,7 +126,8 @@ public class TalkingView extends StateViewBase implements IStateView, InputProce
 	public void onExit() {
 		ttDilogBox.dispose();
 		ttBackground.dispose();
-		ttChr.dispose();
+		TextureFlyweightFactory.getInstance().dispose();
+		
 		if (sdBgm != null) {
 			sdBgm.dispose();
 		}
@@ -158,9 +160,11 @@ public class TalkingView extends StateViewBase implements IStateView, InputProce
 	private void runScript(JSONObject object) {
 		type = object.getString("type");
 		next = object.getIntValue("next");
+		String path;
 		switch (type) {
 		case "talk":
-			ttChr = new Texture(object.getString("leftimage"));
+			path = object.getString("leftimage");
+			ttChr = TextureFlyweightFactory.getInstance().getTexture(path);
 			name = object.getString("name");
 			String all = object.getString("context");
 			int tmpLen = all.length() / this.maxLen + 1;
@@ -185,7 +189,7 @@ public class TalkingView extends StateViewBase implements IStateView, InputProce
 				ttBackground.dispose();
 			}
 			ttBackground = new Texture(object.getString("background"));
-			String path = object.getString("bgm");
+			path = object.getString("bgm");
 			if (path != null && !path.isEmpty()) {
 				if (sdBgm != null) {
 					sdBgm.dispose();

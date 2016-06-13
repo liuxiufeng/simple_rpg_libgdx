@@ -21,6 +21,9 @@ public class LogoView extends StateViewBase implements IStateView {
 
 	@Override
 	public void update(float elapsedTime) {
+		if (this.stateTime == 0) {
+		   sdMeow.play(1.2f);
+		}
 	    this.stateTime += elapsedTime;	
 	}
 
@@ -38,7 +41,6 @@ public class LogoView extends StateViewBase implements IStateView {
        group = "Shadow  Team";
        font = new BitmapFont();
        sdMeow = SoundRes.MEOW.getSound();
-       sdMeow.play(1.2f);
 	}
 
 	@Override

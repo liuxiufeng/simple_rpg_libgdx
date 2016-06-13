@@ -16,9 +16,9 @@ import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.view.IStateView;
 import com.mygdx.game.view.StateViewBase;
 import com.mygdx.model.Character;
-import com.mygdx.model.EventManager;
 import com.mygdx.res.EventMapRes;
 import com.mygdx.utils.Config;
+import com.mygdx.utils.EventManager;
 import com.mygdx.utils.GlobalManager;
 import com.mygdx.utils.OrthogonalTiledMapRendererWithCharacters;
 

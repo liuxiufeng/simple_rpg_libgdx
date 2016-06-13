@@ -12,7 +12,17 @@ import com.mygdx.utils.Config;
 import com.mygdx.utils.RectUtils;
 
 public class Character {
+	public static final int LEFT = 10;
+	public static final int LEFTMOVE = 11;
+	public static final int RIGHT = 20;
+	public static final int RIGHTMOVE = 21;
+	public static final int DOWN = 30;
+	public static final int DOWNMOVE = 31;
+	public static final int UP = 40;
+	public static final int UPMOVE = 41;
+	
 	private final int NOTMOVE = -3333;
+	
 	private int speed;
 	public float x;
 	public float y;
@@ -41,7 +51,7 @@ public class Character {
 
 	public Character() {
 		this.speed = 10;
-		this.state = 30;
+		this.state = DOWN;
 		this.setTarget(NOTMOVE, NOTMOVE);
 	}
 
@@ -75,19 +85,19 @@ public class Character {
 		
 		if (this.targetX == this.NOTMOVE && this.targetY == this.NOTMOVE) {
 			if (Gdx.input.isKeyPressed(Keys.UP)) {
-				changeState = 41;
+				changeState = UPMOVE;
 				isPressed = true;
 				this.setTarget(this.cellX, this.cellY + 1);
 			} else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
-				changeState = 31;
+				changeState = DOWNMOVE;
 				isPressed = true;
 				this.setTarget(this.cellX, this.cellY - 1);
 			} else if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-				changeState = 11;
+				changeState = LEFTMOVE;
 				isPressed = true;
 				this.setTarget(this.cellX - 1, this.cellY);
 			} else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-				changeState = 21;
+				changeState = RIGHTMOVE;
 				isPressed = true;
 				this.setTarget(this.cellX + 1, this.cellY);
 			}
@@ -136,21 +146,21 @@ public class Character {
 
 	public TextureRegion getFrame() {
 		switch (this.state) {
-		case 10:
+		case LEFT:
 			return left.getKeyFrames()[1];
-		case 11:
+		case LEFTMOVE:
 			return left.getKeyFrame(stateTime, true);
-		case 20:
+		case RIGHT:
 			return right.getKeyFrames()[1];
-		case 21:
+		case RIGHTMOVE:
 			return right.getKeyFrame(stateTime, true);
-		case 30:
+		case UP:
 			return up.getKeyFrames()[1];
-		case 31:
+		case UPMOVE:
 			return up.getKeyFrame(stateTime, true);
-		case 40:
+		case DOWN:
 			return down.getKeyFrames()[2];
-		case 41:
+		case DOWNMOVE:
 			return down.getKeyFrame(stateTime, true);
 		}
 		return null;

@@ -5,12 +5,9 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.BufferUtils;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.view.IStateView;
 import com.mygdx.game.view.StateViewBase;
@@ -55,7 +52,6 @@ public class MenuView extends StateViewBase implements IStateView,InputProcessor
         mbStart.setListener(new OnClickListener(){
 			@Override
 			public void excute() {
-				
 
 				game.viewStack.pop();
 				game.viewStack.push(new MapViewBase(game));

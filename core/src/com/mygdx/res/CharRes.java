@@ -20,13 +20,13 @@ public class CharRes {
     			index++;
     		}
     		if (i == 0) {
-    			chr.setUp(new Animation(Config.FRAMETIME, walk));
+    			chr.setDown(new Animation(Config.FRAMETIME, walk));
     		} else if (i == 1) {
     			chr.setLeft(new Animation(Config.FRAMETIME, walk));
     		} else if (i == 2) {
     			chr.setRight(new Animation(Config.FRAMETIME, walk));
     		} else if (i == 3) {
-    			chr.setDown(new Animation(Config.FRAMETIME, walk));
+    			chr.setUp(new Animation(Config.FRAMETIME, walk));
     		}
     		walk = new TextureRegion[3];
     		index = 0;
@@ -46,13 +46,13 @@ public class CharRes {
     			index++;
     		}
     		if (i == 0) {
-    			chr.setUp(new Animation(Config.FRAMETIME, walk));
+    			chr.setDown(new Animation(Config.FRAMETIME, walk));
     		} else if (i == 1) {
     			chr.setLeft(new Animation(Config.FRAMETIME, walk));
     		} else if (i == 2) {
     			chr.setRight(new Animation(Config.FRAMETIME, walk));
     		} else if (i == 3) {
-    			chr.setDown(new Animation(Config.FRAMETIME, walk));
+    			chr.setUp(new Animation(Config.FRAMETIME, walk));
     		}
     		walk = new TextureRegion[3];
     		index = 0;
