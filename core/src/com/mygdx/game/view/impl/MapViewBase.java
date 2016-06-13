@@ -103,10 +103,8 @@ public class MapViewBase extends StateViewBase implements IStateView, InputProce
 
 	@Override
 	public boolean keyDown(int keycode) {
-		switch (keycode) {
-		case Keys.Z:
+		if (keycode == Config.KEYCONFIRM) {
 			this.triggerEvnt(EventManager.TYPE_KEY);
-			break;
 		}
 
 		return true;

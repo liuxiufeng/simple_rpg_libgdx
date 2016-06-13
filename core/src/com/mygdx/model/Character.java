@@ -77,26 +77,26 @@ public class Character {
 		boolean isPressed = false;
 		int changeState = 0;
 
-		if (Gdx.input.isKeyPressed(Keys.X)) {
+		if (Gdx.input.isKeyPressed(Config.KEYCANCEL)) {
 			this.speed = 5;
 		} else {
 			this.speed = 10;
 		}
 		
 		if (this.targetX == this.NOTMOVE && this.targetY == this.NOTMOVE) {
-			if (Gdx.input.isKeyPressed(Keys.UP)) {
+			if (Gdx.input.isKeyPressed(Config.KEYUP)) {
 				changeState = UPMOVE;
 				isPressed = true;
 				this.setTarget(this.cellX, this.cellY + 1);
-			} else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+			} else if (Gdx.input.isKeyPressed(Config.KEYDOW)) {
 				changeState = DOWNMOVE;
 				isPressed = true;
 				this.setTarget(this.cellX, this.cellY - 1);
-			} else if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+			} else if (Gdx.input.isKeyPressed(Config.KEYLEFT)) {
 				changeState = LEFTMOVE;
 				isPressed = true;
 				this.setTarget(this.cellX - 1, this.cellY);
-			} else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+			} else if (Gdx.input.isKeyPressed(Config.KEYRIGHT)) {
 				changeState = RIGHTMOVE;
 				isPressed = true;
 				this.setTarget(this.cellX + 1, this.cellY);

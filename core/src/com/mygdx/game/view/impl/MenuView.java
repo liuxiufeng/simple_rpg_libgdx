@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.fsm.MainMenuFSM;
 import com.mygdx.game.view.IStateView;
 import com.mygdx.game.view.StateViewBase;
 import com.mygdx.res.BackGroundRes;
@@ -19,6 +20,7 @@ public class MenuView extends StateViewBase implements IStateView,InputProcessor
 	private Sprite bg;
 	private MyButton mbStart;
     private List<MyButton> buttons;
+    private MainMenuFSM mainmenuFSM;
 
 	public MenuView(MyGdxGame game) {
 		super(game);
@@ -59,6 +61,8 @@ public class MenuView extends StateViewBase implements IStateView,InputProcessor
         });
         
         buttons.add(mbStart);
+        
+        mainmenuFSM = new MainMenuFSM();
          
        Gdx.input.setInputProcessor(this);
 	}
@@ -72,7 +76,7 @@ public class MenuView extends StateViewBase implements IStateView,InputProcessor
 
 	@Override
 	public boolean keyDown(int keycode) {
-		// TODO Auto-generated method stub
+		mainmenuFSM.keydown(keycode);
 		return false;
 	}
 

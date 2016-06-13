@@ -37,7 +37,6 @@ public class AssetManagerUtils {
 		size1Params.fontParameters.size = 24;
 		size1Params.fontParameters.characters = new FontData().create();
 		manager.load(SIZE24, BitmapFont.class, size1Params);
-		manager.update();
     }
     
     public BitmapFont getFont24() {

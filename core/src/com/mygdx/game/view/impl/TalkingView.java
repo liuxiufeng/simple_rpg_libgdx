@@ -22,7 +22,6 @@ import com.mygdx.game.view.IStateView;
 import com.mygdx.game.view.StateViewBase;
 import com.mygdx.utils.AssetManagerUtils;
 import com.mygdx.utils.Config;
-import com.mygdx.utils.FontUtils;
 import com.mygdx.utils.TextureFlyweightFactory;
 
 public class TalkingView extends StateViewBase implements IStateView, InputProcessor {
@@ -206,7 +205,7 @@ public class TalkingView extends StateViewBase implements IStateView, InputProce
 
 	@Override
 	public boolean keyDown(int keycode) {
-		if (keycode == Keys.Z) {
+		if (keycode == Config.KEYCONFIRM) {
 		    this.ExitOrNext();
 		}
 		return true;

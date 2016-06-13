@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.view.IStateView;
 import com.mygdx.game.view.impl.LogoView;
 import com.mygdx.utils.AssetManagerUtils;
-import com.mygdx.utils.FontUtils;
 import com.mygdx.utils.GlobalManager;
 import com.mygdx.model.Character;
 import com.mygdx.res.CharRes;
