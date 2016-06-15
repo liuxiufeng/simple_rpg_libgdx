@@ -20,10 +20,10 @@ public class Character {
 	public static final int DOWNMOVE = 31;
 	public static final int UP = 40;
 	public static final int UPMOVE = 41;
-	
-	private final int NOTMOVE = -3333;
-	
-	private int speed;
+
+	public static final int NOTMOVE = -3333;
+
+	int speed;
 	public float x;
 	public float y;
 	/*
@@ -37,17 +37,14 @@ public class Character {
 	 */
 	public int targetX;
 	public int targetY;
-	/*
-	 * *0 停 *1 走 1* 左 ，2*右， 3*下 ，4*上
-	 */
 	public int state;
-	private Animation left;
-	private Animation right;
-	private Animation up;
-	private Animation down;
-	private float stateTime = 0;
-	private float width;
-	private float height;
+	Animation left;
+	Animation right;
+	Animation up;
+	Animation down;
+	float stateTime = 0;
+	float width;
+	float height;
 
 	public Character() {
 		this.speed = 10;
@@ -70,35 +67,53 @@ public class Character {
 	public void setTarget(int cellX, int cellY) {
 		this.targetX = cellX;
 		this.targetY = cellY;
+		this.stateTime = 0;
 	}
 
-	public void update(float elapsedTime, MapObjects mapObjects) {
+	public void update(float elapsedTime) {
 		stateTime += elapsedTime;
 		boolean isPressed = false;
-		int changeState = 0;
 
 		if (Gdx.input.isKeyPressed(Config.KEYCANCEL)) {
 			this.speed = 5;
 		} else {
 			this.speed = 10;
 		}
-		
+
+		if (this.targetX != this.NOTMOVE && this.targetY != this.NOTMOVE) {
+			isPressed = true;
+			float per = (stateTime / Config.FRAMETIME) / this.speed;
+			if (per > 1) {
+				per = 1;
+			}
+			this.x = this.cellX * Config.CELLWIDTH + Config.CELLWIDTH * (this.targetX - this.cellX) * per;
+			this.y = this.cellY * Config.CELLWIDTH + Config.CELLWIDTH * (this.targetY - this.cellY) * per;
+			if (this.x == this.targetX * Config.CELLWIDTH && this.y == this.targetY * Config.CELLWIDTH) {
+				this.setCell(targetX, targetY);
+				this.setTarget(NOTMOVE, NOTMOVE);
+			}
+		}
+
+		if (!isPressed) {
+			this.state = (this.state / 10) * 10;
+		}
+
+	}
+	
+	public void updateMove(MapObjects mapObjects) {
+		int changeState = 0;
 		if (this.targetX == this.NOTMOVE && this.targetY == this.NOTMOVE) {
 			if (Gdx.input.isKeyPressed(Config.KEYUP)) {
 				changeState = UPMOVE;
-				isPressed = true;
 				this.setTarget(this.cellX, this.cellY + 1);
 			} else if (Gdx.input.isKeyPressed(Config.KEYDOW)) {
 				changeState = DOWNMOVE;
-				isPressed = true;
 				this.setTarget(this.cellX, this.cellY - 1);
 			} else if (Gdx.input.isKeyPressed(Config.KEYLEFT)) {
 				changeState = LEFTMOVE;
-				isPressed = true;
 				this.setTarget(this.cellX - 1, this.cellY);
 			} else if (Gdx.input.isKeyPressed(Config.KEYRIGHT)) {
 				changeState = RIGHTMOVE;
-				isPressed = true;
 				this.setTarget(this.cellX + 1, this.cellY);
 			}
 
@@ -118,30 +133,12 @@ public class Character {
 				}
 			}
 
-		} else {
-			isPressed = true;
-			float per = (stateTime / Config.FRAMETIME) / this.speed;
-			if (per > 1) {
-				per = 1;
-			}
-			this.x = this.cellX * Config.CELLWIDTH + Config.CELLWIDTH * (this.targetX - this.cellX) * per;
-			this.y = this.cellY * Config.CELLWIDTH + Config.CELLWIDTH * (this.targetY - this.cellY) * per;
-			if (this.x == this.targetX * Config.CELLWIDTH && this.y == this.targetY * Config.CELLWIDTH) {
-				this.setCell(targetX, targetY);
-				this.setTarget(NOTMOVE, NOTMOVE);
-				stateTime = 0;
-			}
 		}
-
-		if (isPressed) {
-			if (changeState != 0 && changeState != this.state) {
-				this.state = changeState;
-				this.stateTime = 0;
-			}
-		} else {
-			this.state = (this.state / 10) * 10;
+		
+		if (changeState != 0 && changeState != this.state) {
+			this.state = changeState;
+			this.stateTime = 0;
 		}
-
 	}
 
 	public TextureRegion getFrame() {

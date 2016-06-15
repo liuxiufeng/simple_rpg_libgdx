@@ -42,6 +42,7 @@ public class TalkingView extends StateViewBase implements IStateView, InputProce
 	int index;
 	int len;
 	private BitmapFont font;
+	SpriteBatch mBatch;
 
 	public TalkingView(MyGdxGame game, String path) {
 		super(game);
@@ -81,6 +82,8 @@ public class TalkingView extends StateViewBase implements IStateView, InputProce
 	public void render(SpriteBatch batch) {
 		if (ttBackground != null) {
 			batch.draw(ttBackground, 0, 0);
+		} else {
+			game.viewStack.elementAt(game.viewStack.size() - 2).render(batch);;
 		}
 		if (ttChr != null) {
 			batch.draw(ttChr, 0, 0);
@@ -102,17 +105,7 @@ public class TalkingView extends StateViewBase implements IStateView, InputProce
 
 	@Override
 	public void onEnter() {
-		byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(),
-				Gdx.graphics.getBackBufferHeight(), true);
-
 		JSONObject node = nodes.getJSONObject(0);
-		if (!"change".equals(node.getString("type"))) {
-			Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(),
-					Pixmap.Format.RGBA8888);
-			BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
-			ttBackground = new Texture(pixmap);
-			pixmap.dispose();
-		}
 		ttDilogBox = new Texture("widgets/dialog1.png");
 		font = AssetManagerUtils.getInstance().getFont24();
 		show = new ArrayList<String>();
@@ -120,12 +113,15 @@ public class TalkingView extends StateViewBase implements IStateView, InputProce
 
 		runScript(node);
 		Gdx.input.setInputProcessor(this);
+		mBatch = new SpriteBatch();
 	}
 
 	@Override
 	public void onExit() {
 		ttDilogBox.dispose();
-		ttBackground.dispose();
+		if (ttBackground != null) {
+		    ttBackground.dispose();
+		}
 		TextureFlyweightFactory.getInstance().dispose();
 		
 		if (sdBgm != null) {

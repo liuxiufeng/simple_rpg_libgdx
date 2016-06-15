@@ -1,0 +1,11 @@
+[
+    {
+        "id": 0, 
+        "type": "talk", 
+        "name": "玛丽", 
+        "leftimage": "char/mary_cap.png", 
+        "sound": "", 
+        "context": "铃仙，呀哈罗", 
+        "next": -1
+    },
+]
