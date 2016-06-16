@@ -5,6 +5,7 @@ import com.mygdx.game.view.impl.CorridorView;
 import com.mygdx.game.view.impl.MapViewBase;
 import com.mygdx.game.view.impl.TalkingView;
 import com.mygdx.model.NPC;
+import com.mygdx.model.Character;
 
 public class EventManager {
 	public static final int TYPE_KEY = 0;
@@ -19,11 +20,14 @@ public class EventManager {
 	}
 
 	public static final void excuteEvent(int eventcode, MapViewBase view) {
+		int[][] evnetMap = view.getEVENTMAP();
 		switch (eventcode) {
 		case 101:
-			GlobalManager.hero.setCell(2, 8);
-			GlobalManager.game.viewStack.pop();
-			GlobalManager.game.viewStack.push(new CorridorView(GlobalManager.game));
+			if (GlobalManager.hero.state == Character.DOWN || GlobalManager.hero.state == Character.DOWNMOVE) {
+				GlobalManager.hero.setCell(2, 8);
+				GlobalManager.game.viewStack.pop();
+				GlobalManager.game.viewStack.push(new CorridorView(GlobalManager.game));
+			}
 			break;
 		case 201:
 			GlobalManager.game.viewStack.push(new TalkingView(GlobalManager.game, "data/event/event01.json"));
@@ -35,7 +39,6 @@ public class EventManager {
 				GlobalManager.eventState = 1;
 				final NPC npc = view.getNPC("reisen");
 				new Thread(new Runnable() {
-
 					@Override
 					public void run() {
 						npc.state = NPC.DOWNMOVE;
@@ -49,6 +52,23 @@ public class EventManager {
 							System.out.println(npc.targetY);
 						}
 						;
+						while (npc.targetX != NPC.NOTMOVE || npc.targetY != NPC.NOTMOVE) {
+							System.out.println(npc.targetY);
+						}
+						;
+						if (npc.cellX  != GlobalManager.hero.cellX) {
+							if (npc.cellX < GlobalManager.hero.cellX) {
+								npc.state = NPC.RIGHTMOVE;
+							} else {
+								npc.state = NPC.LEFTMOVE;
+							}
+							npc.setTarget(GlobalManager.hero.cellX, npc.cellY);
+						}
+						while (npc.targetX != NPC.NOTMOVE || npc.targetY != NPC.NOTMOVE) {
+							System.out.println(npc.targetY);
+						}
+						;
+						npc.state = NPC.DOWN;
 						GlobalManager.hero.state = NPC.UP;
 						GlobalManager.eventState = 2;
 					}
@@ -56,11 +76,11 @@ public class EventManager {
 			} else if (GlobalManager.eventState == 2) {
 				GlobalManager.eventState = 3;
 				GlobalManager.game.viewStack.push(new TalkingView(GlobalManager.game, "data/event/event02.json"));
-				view.isEvnet = false;
 			} else if (GlobalManager.eventState == 3) {
-				GlobalManager.hero.setCell(2, 8);
-				GlobalManager.game.viewStack.pop();
-				GlobalManager.game.viewStack.push(new CorridorView(GlobalManager.game));
+				view.isEvnet = false;
+				evnetMap[0][6] = 101;
+				evnetMap[0][7] = 101;
+				evnetMap[0][8] = 101;
 			}
 			break;
 		}

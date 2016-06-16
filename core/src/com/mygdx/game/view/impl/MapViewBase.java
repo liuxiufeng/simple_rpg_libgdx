@@ -95,7 +95,7 @@ public class MapViewBase extends StateViewBase implements IStateView, InputProce
 	    
 		NPC npc = new NPC();
 		CharRes.getReisen(npc);
-		npc.setCell(6, 3);
+		npc.setCell(7, 3);
 		npc.setEventNum(202);
 		
 		npcs.put("reisen", npc);
@@ -138,6 +138,10 @@ public class MapViewBase extends StateViewBase implements IStateView, InputProce
 	
 	public NPC getNPC(String key) {
 		return npcs.get(key);
+	}
+	
+	public int[][] getEVENTMAP() {
+		return this.eventMap;
 	}
 
 	@Override
