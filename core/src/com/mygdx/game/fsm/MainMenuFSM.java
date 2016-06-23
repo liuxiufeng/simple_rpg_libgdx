@@ -11,12 +11,16 @@ public class MainMenuFSM {
 	
 	public void keydown(int keycode) {
 	    if (keycode == Config.KEYUP) {
-	    	this.state.pre();
+	    	this.state.pre(this);
 	    } else if (keycode == Config.KEYDOW) {
-	    	this.state.next();
+	    	this.state.next(this);
 	    } else if (keycode == Config.KEYCONFIRM) {
 	    	this.state.execute();
 	    }
+	}
+	
+	public void setState(MainMenuState state) {
+		this.state = state;
 	}
 
 }

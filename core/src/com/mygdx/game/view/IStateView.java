@@ -4,21 +4,23 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public interface IStateView {
 	/**
-	 * ¸ù¾Ý¾­¹ýÊ±¼ä¸üÐÂ»­Ãæ
+	 * ï¿½ï¿½ï¿½Ý¾ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Â»ï¿½ï¿½ï¿½
 	 * @param elapsedTime
 	 */
     void update(float elapsedTime);
     /**
-     * »æÖÆ
+     * ï¿½ï¿½ï¿½ï¿½
      */
     void render(SpriteBatch batch);
     /**
-     * ½øÈëÊ±³õÊ¼»¯
+     * ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Ê¼ï¿½ï¿½
      */
     void onEnter();
     
     /**
-     * ÍË³ö
+     * ï¿½Ë³ï¿½
      */
     void onExit();
+    
+    public void addListener();
 }

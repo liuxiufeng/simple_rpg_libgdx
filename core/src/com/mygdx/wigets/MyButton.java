@@ -2,6 +2,7 @@ package com.mygdx.wigets;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.component.controller.IKeyListener;
 
 public class MyButton {
     private Sprite spNormal;
@@ -41,7 +42,9 @@ public class MyButton {
     	if (this.listener == null) return;
     	if (tx - x > 0 && tx - x < width) {
     		if (ty - y > 0 && ty - y < height) {
-    			this.listener.excute();
+    			if (this.listener != null) {
+					this.listener.excute();
+    			}
     		}
     	}
     }
@@ -81,5 +84,4 @@ public class MyButton {
 		this.spNormal.getTexture().dispose();
 		this.spPressed.getTexture().dispose();
 	}
-   
 }

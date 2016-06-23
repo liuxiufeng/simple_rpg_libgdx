@@ -3,6 +3,7 @@ package com.mygdx.model;
 import com.badlogic.gdx.maps.MapObjects;
 import com.mygdx.utils.Config;
 import com.mygdx.utils.EventManager;
+import com.mygdx.utils.GlobalManager;
 
 public class NPC extends Character {
 	private int eventNum;
@@ -73,5 +74,17 @@ public class NPC extends Character {
 
 	public void setStateTime(float time) {
 		this.stateTime = 0;
+	}
+
+	@Override
+	public void keyDown(int keycode) {
+		if (keycode == Config.KEYCONFIRM) {
+			this.talked(GlobalManager.hero.cellX, GlobalManager.hero.cellY, GlobalManager.hero.state);
+		}
+	}
+
+	@Override
+	public void keyUp(int keycode) {
+
 	}
 }

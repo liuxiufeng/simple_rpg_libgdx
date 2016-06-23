@@ -17,6 +17,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.component.controller.IKeyListener;
+import com.mygdx.component.controller.KeyProcess;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.view.IStateView;
 import com.mygdx.game.view.StateViewBase;
@@ -24,7 +26,7 @@ import com.mygdx.utils.AssetManagerUtils;
 import com.mygdx.utils.Config;
 import com.mygdx.utils.TextureFlyweightFactory;
 
-public class TalkingView extends StateViewBase implements IStateView, InputProcessor {
+public class TalkingView extends StateViewBase implements IStateView, IKeyListener {
 	private final int maxLen = 30;
 
 	Texture ttDilogBox;
@@ -43,9 +45,23 @@ public class TalkingView extends StateViewBase implements IStateView, InputProce
 	int len;
 	private BitmapFont font;
 	SpriteBatch mBatch;
+	IStateView preView;
 
-	public TalkingView(MyGdxGame game, String path) {
-		super(game);
+	public TalkingView(IStateView preView,  String path) {
+		super();
+		this.preView = preView;
+		String jsonStr = null;
+		try {
+			jsonStr = new String(Gdx.files.internal(path).readBytes(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		nodes = JSON.parseArray(jsonStr);
+		this.onEnter();
+	}
+	
+	public TalkingView(String path) {
+		super();
 		String jsonStr = null;
 		try {
 			jsonStr = new String(Gdx.files.internal(path).readBytes(), "UTF-8");
@@ -58,6 +74,10 @@ public class TalkingView extends StateViewBase implements IStateView, InputProce
 
 	@Override
 	public void update(float elapsedTime) {
+		if (preView != null) {
+			preView.update(elapsedTime);
+		}
+		
 		if (type.equals("talk")) {
 			len = (int) (stateTime / (Config.FRAMETIME * 2));
 			len = Math.min(content[index].length(), len);
@@ -82,9 +102,12 @@ public class TalkingView extends StateViewBase implements IStateView, InputProce
 	public void render(SpriteBatch batch) {
 		if (ttBackground != null) {
 			batch.draw(ttBackground, 0, 0);
-		} else {
-			game.viewStack.elementAt(game.viewStack.size() - 2).render(batch);;
 		}
+	    
+		if (preView != null) {
+			preView.render(batch);
+		}
+		
 		if (ttChr != null) {
 			batch.draw(ttChr, 0, 0);
 		}
@@ -112,16 +135,17 @@ public class TalkingView extends StateViewBase implements IStateView, InputProce
 		this.name = "";
 
 		runScript(node);
-		Gdx.input.setInputProcessor(this);
 		mBatch = new SpriteBatch();
 	}
 
 	@Override
 	public void onExit() {
+		MyGdxGame.removeState();
 		ttDilogBox.dispose();
 		if (ttBackground != null) {
 		    ttBackground.dispose();
 		}
+
 		TextureFlyweightFactory.getInstance().dispose();
 		
 		if (sdBgm != null) {
@@ -130,9 +154,7 @@ public class TalkingView extends StateViewBase implements IStateView, InputProce
 		if (sdEffect != null) {
 			sdEffect.dispose();
 		}
-
-		this.game.viewStack.pop();
-		Gdx.input.setInputProcessor((InputProcessor) this.game.viewStack.lastElement());
+		
 	}
 
 	private void ExitOrNext() {
@@ -200,53 +222,20 @@ public class TalkingView extends StateViewBase implements IStateView, InputProce
 	}
 
 	@Override
-	public boolean keyDown(int keycode) {
+	public void keyDown(int keycode) {
 		if (keycode == Config.KEYCONFIRM) {
 		    this.ExitOrNext();
 		}
-		return true;
 	}
 
 	@Override
-	public boolean keyUp(int keycode) {
+	public void keyUp(int keycode) {
 		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
-	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		this.ExitOrNext();
-		return true;
-	}
-
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
-		return false;
+	public void addListener() {
+	    KeyProcess.addListner(this);	
 	}
 
 }

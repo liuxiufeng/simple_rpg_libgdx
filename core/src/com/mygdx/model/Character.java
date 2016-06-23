@@ -1,17 +1,18 @@
 package com.mygdx.model;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.component.controller.IKeyListener;
+import com.mygdx.component.view.BaseView;
 import com.mygdx.utils.Config;
 import com.mygdx.utils.RectUtils;
 
-public class Character {
+public class Character extends BaseView implements IKeyListener {
 	public static final int LEFT = 10;
 	public static final int LEFTMOVE = 11;
 	public static final int RIGHT = 20;
@@ -20,7 +21,6 @@ public class Character {
 	public static final int DOWNMOVE = 31;
 	public static final int UP = 40;
 	public static final int UPMOVE = 41;
-
 	public static final int NOTMOVE = -3333;
 
 	int speed;
@@ -45,6 +45,8 @@ public class Character {
 	float stateTime = 0;
 	float width;
 	float height;
+	
+	int pressedKey;
 
 	public Character() {
 		this.speed = 10;
@@ -69,19 +71,11 @@ public class Character {
 		this.targetY = cellY;
 		this.stateTime = 0;
 	}
-
+    
 	public void update(float elapsedTime) {
 		stateTime += elapsedTime;
-		boolean isPressed = false;
-
-		if (Gdx.input.isKeyPressed(Config.KEYCANCEL)) {
-			this.speed = 5;
-		} else {
-			this.speed = 10;
-		}
 
 		if (this.targetX != this.NOTMOVE && this.targetY != this.NOTMOVE) {
-			isPressed = true;
 			float per = (stateTime / Config.FRAMETIME) / this.speed;
 			if (per > 1) {
 				per = 1;
@@ -92,27 +86,24 @@ public class Character {
 				this.setCell(targetX, targetY);
 				this.setTarget(NOTMOVE, NOTMOVE);
 			}
-		}
-
-		if (!isPressed) {
+		} else {
 			this.state = (this.state / 10) * 10;
 		}
-
 	}
 	
 	public void updateMove(MapObjects mapObjects) {
 		int changeState = 0;
 		if (this.targetX == this.NOTMOVE && this.targetY == this.NOTMOVE) {
-			if (Gdx.input.isKeyPressed(Config.KEYUP)) {
+			if (this.pressedKey == Config.KEYUP) {
 				changeState = UPMOVE;
 				this.setTarget(this.cellX, this.cellY + 1);
-			} else if (Gdx.input.isKeyPressed(Config.KEYDOW)) {
+			} else if (this.pressedKey == Config.KEYDOW) {
 				changeState = DOWNMOVE;
 				this.setTarget(this.cellX, this.cellY - 1);
-			} else if (Gdx.input.isKeyPressed(Config.KEYLEFT)) {
+			} else if (this.pressedKey == Config.KEYLEFT) {
 				changeState = LEFTMOVE;
 				this.setTarget(this.cellX - 1, this.cellY);
-			} else if (Gdx.input.isKeyPressed(Config.KEYRIGHT)) {
+			} else if (this.pressedKey == Config.KEYRIGHT) {
 				changeState = RIGHTMOVE;
 				this.setTarget(this.cellX + 1, this.cellY);
 			}
@@ -141,26 +132,36 @@ public class Character {
 		}
 	}
 
-	public TextureRegion getFrame() {
+	public void draw(Batch batch) {
+		TextureRegion currentFrame = null;
 		switch (this.state) {
 		case LEFT:
-			return left.getKeyFrames()[1];
+			 currentFrame = left.getKeyFrames()[1];
+			break;
 		case LEFTMOVE:
-			return left.getKeyFrame(stateTime, true);
+			 currentFrame = left.getKeyFrame(stateTime, true);
+			break;
 		case RIGHT:
-			return right.getKeyFrames()[1];
+			currentFrame = right.getKeyFrames()[1];
+			break;
 		case RIGHTMOVE:
-			return right.getKeyFrame(stateTime, true);
+			currentFrame = right.getKeyFrame(stateTime, true);
+			break;
 		case UP:
-			return up.getKeyFrames()[1];
+			currentFrame = up.getKeyFrames()[1];
+			break;
 		case UPMOVE:
-			return up.getKeyFrame(stateTime, true);
+			currentFrame = up.getKeyFrame(stateTime, true);
+			break;
 		case DOWN:
-			return down.getKeyFrames()[2];
+			currentFrame = down.getKeyFrames()[2];
+			break;
 		case DOWNMOVE:
-			return down.getKeyFrame(stateTime, true);
+			currentFrame = down.getKeyFrame(stateTime, true);
+			break;
 		}
-		return null;
+
+		batch.draw(currentFrame, x, y);
 	}
 
 	public Animation getRight() {
@@ -209,6 +210,30 @@ public class Character {
 
 	public void setHeight(float height) {
 		this.height = height;
+	}
+
+	@Override
+	public void keyDown(int keycode) {
+		if (keycode == Config.KEYDOW || keycode == Config.KEYUP ||
+				keycode == Config.KEYRIGHT || keycode == Config.KEYLEFT) {
+			this.pressedKey = keycode;
+		}
+		
+		if (keycode == Config.KEYCANCEL) {
+			this.speed = 5;
+		} 
+		
+	}
+
+	@Override
+	public void keyUp(int keycode) {
+	    if (this.pressedKey == keycode) {
+	    	this.pressedKey = 0;
+	    }
+	   
+	    if (keycode == Config.KEYCANCEL) {
+	        this.speed = 10;	
+	    }
 	}
 
 }

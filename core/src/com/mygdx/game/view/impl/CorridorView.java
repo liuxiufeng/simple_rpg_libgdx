@@ -7,12 +7,11 @@ import com.mygdx.res.EventMapRes;
 public class CorridorView extends MapViewBase{
 
 	public CorridorView(MyGdxGame game) {
-		super(game);
+		super();
 	}
 	
 	@Override
 	public void onEnter() {
 	    tiledMap = new TmxMapLoader().load("map/corridor1.tmx");
-	    //eventMap = EventMapRes.getEventMap("room1");
 	}
 }

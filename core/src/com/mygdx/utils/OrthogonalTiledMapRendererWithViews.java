@@ -8,19 +8,20 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.mygdx.component.view.BaseView;
 import com.mygdx.model.Character;
 
-public class OrthogonalTiledMapRendererWithCharacters extends OrthogonalTiledMapRenderer {
-    private List<Character> chrs;
+public class OrthogonalTiledMapRendererWithViews extends OrthogonalTiledMapRenderer {
+    private List<BaseView> views;
     private int drawSpritesAfterLayer = 2;
 
-    public OrthogonalTiledMapRendererWithCharacters(TiledMap map) {
+    public OrthogonalTiledMapRendererWithViews(TiledMap map) {
         super(map);
-        chrs = new ArrayList<Character>();
+        views = new ArrayList<BaseView>();
     }
 
-    public void addCharacter(Character chr){
-    	chrs.add(chr);
+    public void addCharacter(BaseView chr){
+    	views.add(chr);
     }
 
     @Override
@@ -34,8 +35,8 @@ public class OrthogonalTiledMapRendererWithCharacters extends OrthogonalTiledMap
                     renderTileLayer((TiledMapTileLayer)layer);
                     currentLayer++;
                     if(currentLayer == drawSpritesAfterLayer){
-                        for(Character chr : chrs) {
-                        	this.getBatch().draw(chr.getFrame(), chr.x, chr.y);
+                        for(BaseView chr : views) {
+                        	chr.draw(this.getBatch());
                         }
                     }
                 } else {

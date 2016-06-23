@@ -14,8 +14,8 @@ public class LogoView extends StateViewBase implements IStateView {
 	private BitmapFont font;
 	private Sound sdMeow;
     
-	public LogoView(MyGdxGame game) {
-		super(game);
+	public LogoView() {
+		super();
 		onEnter();
 	}
 
@@ -47,8 +47,12 @@ public class LogoView extends StateViewBase implements IStateView {
 	public void onExit() {
 	   font.dispose();
 	   sdMeow.dispose();
-	   this.game.viewStack.pop(); 
-	   this.game.viewStack.push(new MenuView(game));
+	   MyGdxGame.switchState(new MenuView());
+	}
+
+	@Override
+	public void addListener() {
+		
 	}
 
 }

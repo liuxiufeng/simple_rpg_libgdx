@@ -1,30 +1,30 @@
 package com.mygdx.game.fsm;
 
+import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.view.impl.MapViewBase;
-import com.mygdx.utils.GlobalManager;
 
 public enum MainMenuState {
 	NewGame {
 		@Override
-		public void pre() {
+		public void pre(MainMenuFSM fsm) {
 
 		}
 
 		@Override
-		public void next() {
+		public void next(MainMenuFSM fsm) {
 
 		}
 
 		@Override
 		public void execute() {
-            GlobalManager.game.viewStack.pop();
-            GlobalManager.game.viewStack.push(new MapViewBase(GlobalManager.game));
+		    System.out.println("Start New Game");
+			MyGdxGame.switchState(new MapViewBase());
 		}
 	};
 	
-	public abstract void pre();
+	public abstract void pre(MainMenuFSM fsm);
 
-	public abstract void next();
+	public abstract void next(MainMenuFSM fsm);
 
 	public abstract void execute();
 
