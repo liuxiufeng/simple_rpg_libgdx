@@ -60,6 +60,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 	public static void switchState(final IStateView view) {
 		viewStack.pop();
 		viewStack.push(view);
+		view.onExit();
 		new Thread(new Runnable() {
 			@Override
 			public void run() {

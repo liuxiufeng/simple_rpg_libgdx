@@ -138,6 +138,10 @@ public class MapViewBase extends StateViewBase implements IStateView {
 		return this.eventMap;
 	}
 
+	public MapObjects getMapObjects() {
+		return this.collisionObjecs;
+	}
+	
 	@Override
 	public void addListener() {
 		KeyProcess.addListner(ch);
@@ -146,5 +150,4 @@ public class MapViewBase extends StateViewBase implements IStateView {
 			KeyProcess.addListner(npc);
 		}
 	}
-
 }

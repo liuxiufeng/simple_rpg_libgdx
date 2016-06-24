@@ -8,11 +8,13 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.component.controller.IKeyListener;
+import com.mygdx.component.event.ActionListener;
+import com.mygdx.component.event.Impl.MoveEvent;
 import com.mygdx.component.view.BaseView;
 import com.mygdx.utils.Config;
 import com.mygdx.utils.RectUtils;
 
-public class Character extends BaseView implements IKeyListener {
+public class Character extends BaseView implements IKeyListener, ActionListener {
 	public static final int LEFT = 10;
 	public static final int LEFTMOVE = 11;
 	public static final int RIGHT = 20;
@@ -24,8 +26,7 @@ public class Character extends BaseView implements IKeyListener {
 	public static final int NOTMOVE = -3333;
 
 	int speed;
-	public float x;
-	public float y;
+
 	/*
 	 * 所在的cell上
 	 */
@@ -235,5 +236,14 @@ public class Character extends BaseView implements IKeyListener {
 	        this.speed = 10;	
 	    }
 	}
+
+	@Override
+	public void callback(com.mygdx.component.event.ActionEvent caller) {
+	    if(caller instanceof MoveEvent) {
+	    	
+	    }	
+	}
+
+	
 
 }

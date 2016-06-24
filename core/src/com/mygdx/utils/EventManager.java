@@ -1,6 +1,5 @@
 package com.mygdx.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.view.impl.MapViewBase;
 import com.mygdx.game.view.impl.TalkingView;
