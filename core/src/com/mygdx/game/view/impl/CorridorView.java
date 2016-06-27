@@ -6,7 +6,7 @@ import com.mygdx.res.EventMapRes;
 
 public class CorridorView extends MapViewBase{
 
-	public CorridorView(MyGdxGame game) {
+	public CorridorView() {
 		super();
 	}
 	

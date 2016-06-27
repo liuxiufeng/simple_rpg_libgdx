@@ -26,6 +26,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		batch = new SpriteBatch();
 		viewStack = new Stack<IStateView>();
 		viewStack.push(new LogoView());
+
 		GlobalManager.game = this;
 		Character ch = new Character();
 		CharRes.getMary(ch);
@@ -58,9 +59,11 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 	}
 
 	public static void switchState(final IStateView view) {
-		viewStack.pop();
+		IStateView preView = viewStack.pop();
+		preView.onExit();
+
 		viewStack.push(view);
-		view.onExit();
+		
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -90,7 +93,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 	}
 
 	public static void removeState() {
-		viewStack.pop();
+		IStateView preView = viewStack.pop();
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -102,6 +105,8 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 			}
 
 		}).start();
+		
+		preView.onExit();
 	}
 	
 	public static IStateView getView() {

@@ -1,9 +1,6 @@
 package com.mygdx.model;
 
-import com.badlogic.gdx.maps.MapObjects;
-import com.mygdx.utils.Config;
 import com.mygdx.utils.EventManager;
-import com.mygdx.utils.GlobalManager;
 
 public class NPC extends Character {
 	private int eventNum;
@@ -11,40 +8,14 @@ public class NPC extends Character {
 	public NPC() {
 		super();
 	}
-
+	
 	@Override
 	public void update(float elapsedTime) {
-
 		stateTime += elapsedTime;
-		boolean isPressed = false;
-		int changeState = 0;
-
-		if (this.targetX == this.NOTMOVE && this.targetY == this.NOTMOVE) {
-
-		} else {
-			isPressed = true;
-			float per = (stateTime / Config.FRAMETIME) / this.speed;
-			if (per > 1) {
-				per = 1;
-			}
-			this.x = this.cellX * Config.CELLWIDTH + Config.CELLWIDTH * (this.targetX - this.cellX) * per;
-			this.y = this.cellY * Config.CELLWIDTH + Config.CELLWIDTH * (this.targetY - this.cellY) * per;
-			if (this.x == this.targetX * Config.CELLWIDTH && this.y == this.targetY * Config.CELLWIDTH) {
-				this.setCell(targetX, targetY);
-				this.setTarget(NOTMOVE, NOTMOVE);
-				stateTime = 0;
-			}
+		if (actionList.size() > 0) {
+			this.isAction = true;
+			actionList.get(0).update();
 		}
-
-		if (isPressed) {
-			if (changeState != 0 && changeState != this.state) {
-				this.state = changeState;
-				this.stateTime = 0;
-			}
-		} else {
-			this.state = (this.state / 10) * 10;
-		}
-
 	}
 
 	public void talked(int heroX, int heroY, int heroState) {
@@ -64,6 +35,11 @@ public class NPC extends Character {
 		}
 	}
 
+	@Override
+	public void callback(com.mygdx.component.event.ActionEvent caller) {
+
+	}
+	
 	public int getEventNum() {
 		return eventNum;
 	}
@@ -78,9 +54,7 @@ public class NPC extends Character {
 
 	@Override
 	public void keyDown(int keycode) {
-		if (keycode == Config.KEYCONFIRM) {
-			this.talked(GlobalManager.hero.cellX, GlobalManager.hero.cellY, GlobalManager.hero.state);
-		}
+
 	}
 
 	@Override

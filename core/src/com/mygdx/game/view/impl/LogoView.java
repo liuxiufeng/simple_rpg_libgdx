@@ -32,7 +32,7 @@ public class LogoView extends StateViewBase implements IStateView {
 	    int len = Math.min(group.length(), (int) (stateTime / this.FRAME));
 	    font.draw(batch, group.substring(0, len), Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 -5);
 	    if (stateTime > (this.FRAME * group.length() + 0.5f)) {
-	    	this.onExit();
+		   MyGdxGame.switchState(new MenuView());
 	    }
 	}
 
@@ -47,7 +47,6 @@ public class LogoView extends StateViewBase implements IStateView {
 	public void onExit() {
 	   font.dispose();
 	   sdMeow.dispose();
-	   MyGdxGame.switchState(new MenuView());
 	}
 
 	@Override

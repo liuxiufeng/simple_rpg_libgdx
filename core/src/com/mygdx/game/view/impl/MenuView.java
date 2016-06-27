@@ -37,7 +37,7 @@ public class MenuView extends StateViewBase implements IStateView, IKeyListener{
 	@Override
 	public void render(SpriteBatch batch) {
 		bg.draw(batch);
-		for(MyButton bt: buttons) {
+		for(MyButton bt : buttons) {
 			bt.draw(batch);
 		}
 	}
@@ -69,6 +69,8 @@ public class MenuView extends StateViewBase implements IStateView, IKeyListener{
 		for(MyButton bt: buttons) {
 			bt.dispose();
 		}
+		
+	    bg.getTexture().dispose();
 	}
 
 	@Override

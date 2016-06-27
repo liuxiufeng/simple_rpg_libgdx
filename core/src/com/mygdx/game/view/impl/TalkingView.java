@@ -140,7 +140,6 @@ public class TalkingView extends StateViewBase implements IStateView, IKeyListen
 
 	@Override
 	public void onExit() {
-		MyGdxGame.removeState();
 		ttDilogBox.dispose();
 		if (ttBackground != null) {
 		    ttBackground.dispose();
@@ -162,7 +161,7 @@ public class TalkingView extends StateViewBase implements IStateView, IKeyListen
 		case "talk":
 			if (index == content.length - 1) {
 				if (next == -1) {
-					this.onExit();
+					MyGdxGame.removeState();
 				} else {
 					runScript(nodes.getJSONObject(next));
 				}
@@ -170,7 +169,7 @@ public class TalkingView extends StateViewBase implements IStateView, IKeyListen
 			break;
 		default:
 			if (next == -1) {
-				this.onExit();
+					MyGdxGame.removeState();
 			}
 		}
 	}

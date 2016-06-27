@@ -4,4 +4,6 @@ public interface ActionEvent {
     public void update();
 
     public void setListener(ActionListener listener); 
+    
+    public boolean getResult();
 }

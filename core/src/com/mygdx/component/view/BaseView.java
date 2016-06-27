@@ -7,6 +7,10 @@ public abstract class BaseView {
 	
 	public float y;
 	
+	public float width;
+	
+	public float height;
+	
     public abstract void update(float elapsedTime);
 	
 	public abstract void draw(Batch batch);

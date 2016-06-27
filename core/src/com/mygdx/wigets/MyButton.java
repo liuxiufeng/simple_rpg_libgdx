@@ -1,5 +1,6 @@
 package com.mygdx.wigets;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.component.controller.IKeyListener;
@@ -25,7 +26,7 @@ public class MyButton {
     	this.height = height;
     }
     
-    public void draw(SpriteBatch batch) {
+    public void draw(Batch batch) {
     	Sprite now;
     	if (this.isChecked) {
     		now = this.spPressed;
