@@ -1,21 +1,67 @@
 package com.mygdx.utils;
 
-import com.mygdx.game.MyGdxGame;
-import com.mygdx.game.view.impl.MapViewBase;
-import com.mygdx.game.view.impl.TalkingView;
-import com.mygdx.model.NPC;
-import com.mygdx.model.Character;
+import java.util.ArrayList;
+import java.util.List;
 
-public class EventManager {
-	public static final int TYPE_KEY = 0;
-	public static final int TYPE_AUTO = 1;
-    
-	
-	public static final void excuteEvent(int eventcode) {
-		switch (eventcode) {
-		case 202:
-			MyGdxGame.addState(new TalkingView( MyGdxGame.getView(), "data/event/event02.json"));
-			break;
+import com.mygdx.component.event.ActionEvent;
+import com.mygdx.component.event.ActionListener;
+
+public class EventManager implements ActionListener {
+	private static EventManager instance;
+	private List<ActionEvent> events;
+	private List<ActionEvent> addEvents;
+	private List<ActionEvent> removeEvents;
+
+	private EventManager() {
+		events = new ArrayList<ActionEvent>();
+		removeEvents = new ArrayList<ActionEvent>();
+		addEvents = new ArrayList<ActionEvent>();
+	};
+
+	public static EventManager getInstance() {
+		if (instance == null) {
+			instance = new EventManager();
+		}
+
+		return instance;
+	}
+
+	public void process() {
+
+		events.addAll(addEvents);
+		addEvents.clear();
+
+		if (events == null || events.size() == 0) {
+			return;
+		}
+
+		for (ActionEvent event : events) {
+			event.excute();
+		}
+
+		for (ActionEvent event : removeEvents) {
+			if (events.contains(event)) {
+				events.remove(event);
+			}
+		}
+
+		removeEvents.clear();
+	}
+
+	public void addEvents(ActionEvent event) {
+		if (!events.contains(event) && !addEvents.contains(event)) {
+			event.setListener(this);
+			addEvents.add(event);
+			event.before();
 		}
 	}
+
+	@Override
+	public void callback(ActionEvent caller) {
+		caller.after();
+		if (events.contains(caller) && !removeEvents.contains(caller)) {
+			removeEvents.add(caller);
+		}
+	}
+
 }

@@ -10,25 +10,28 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.component.controller.KeyProcess;
 import com.mygdx.game.view.IStateView;
+import com.mygdx.game.view.StateViewBase;
 import com.mygdx.game.view.impl.LogoView;
-import com.mygdx.utils.AssetManagerUtils;
-import com.mygdx.utils.GlobalManager;
 import com.mygdx.model.Character;
+import com.mygdx.model.Hero;
 import com.mygdx.res.CharRes;
+import com.mygdx.utils.AssetManagerUtils;
+import com.mygdx.utils.EventManager;
+import com.mygdx.utils.GlobalManager;
 
 public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 	private SpriteBatch batch;
 	private BitmapFont font;
-	private static Stack<IStateView> viewStack;
+	private static Stack<StateViewBase> viewStack;
 
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		viewStack = new Stack<IStateView>();
+		viewStack = new Stack<StateViewBase>();
 		viewStack.push(new LogoView());
 
 		GlobalManager.game = this;
-		Character ch = new Character();
+		Hero ch = new Hero();
 		CharRes.getMary(ch);
 		GlobalManager.hero = ch;
 		font = new BitmapFont();
@@ -39,12 +42,13 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public void render() {
-		IStateView view = viewStack.lastElement();
+		StateViewBase view = viewStack.lastElement();
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		KeyProcess.process();
-
+		KeyProcess.process(view.getKeyListeners());
+		EventManager.getInstance().process();
+		
 		if (AssetManagerUtils.getInstance().update()) {
 			view.update(Gdx.graphics.getDeltaTime());
 			batch.begin();
@@ -58,54 +62,19 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		}
 	}
 
-	public static void switchState(final IStateView view) {
-		IStateView preView = viewStack.pop();
+	public static void switchState(final StateViewBase view) {
+		StateViewBase preView = viewStack.pop();
 		preView.onExit();
 
 		viewStack.push(view);
-		
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (KeyProcess.isProcess) {
-
-				}
-				KeyProcess.clear();
-				view.addListener();
-			}
-
-		}).start();
 	}
 
-	public static void addState(final IStateView view) {
+	public static void addState(final StateViewBase view) {
 		viewStack.push(view);
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (KeyProcess.isProcess) {
-
-				}
-				KeyProcess.clear();
-				view.addListener();
-			}
-
-		}).start();
 	}
-
+	
 	public static void removeState() {
-		IStateView preView = viewStack.pop();
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (KeyProcess.isProcess) {
-
-				}
-				KeyProcess.clear();
-				viewStack.firstElement().addListener();
-			}
-
-		}).start();
-		
+		StateViewBase preView = viewStack.pop();
 		preView.onExit();
 	}
 	

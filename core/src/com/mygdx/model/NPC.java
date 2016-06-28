@@ -1,23 +1,15 @@
 package com.mygdx.model;
 
-import com.mygdx.utils.EventManager;
+import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.view.impl.TalkingView;
 
 public class NPC extends Character {
-	private int eventNum;
+	private String eventPath;
 
 	public NPC() {
 		super();
 	}
 	
-	@Override
-	public void update(float elapsedTime) {
-		stateTime += elapsedTime;
-		if (actionList.size() > 0) {
-			this.isAction = true;
-			actionList.get(0).update();
-		}
-	}
-
 	public void talked(int heroX, int heroY, int heroState) {
 		if (this.cellX == heroX + 1 && this.cellY == heroY && heroState == RIGHT) {
 			this.state = LEFT;
@@ -30,35 +22,21 @@ public class NPC extends Character {
 		} else {
 			return;
 		}
-		if (eventNum != 0) {
-			EventManager.excuteEvent(eventNum);
+		
+		if (eventPath != null && !"".equals(eventPath)) {
+			MyGdxGame.addState(new TalkingView(MyGdxGame.getView(), this.eventPath));
 		}
 	}
 
-	@Override
-	public void callback(com.mygdx.component.event.ActionEvent caller) {
-
-	}
-	
-	public int getEventNum() {
-		return eventNum;
+	public String getEventPath() {
+		return this.eventPath;
 	}
 
-	public void setEventNum(int eventNum) {
-		this.eventNum = eventNum;
+	public void setEventPath(String eventPath) {
+		this.eventPath = eventPath;
 	}
 
 	public void setStateTime(float time) {
 		this.stateTime = 0;
-	}
-
-	@Override
-	public void keyDown(int keycode) {
-
-	}
-
-	@Override
-	public void keyUp(int keycode) {
-
 	}
 }

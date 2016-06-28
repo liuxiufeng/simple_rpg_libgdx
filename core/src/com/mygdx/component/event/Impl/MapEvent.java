@@ -30,9 +30,11 @@ public class MapEvent extends EventBase implements ActionListener {
 	
 	private int eventcode;
 	
-	public MapEvent(ActionListener listener) {
-		super(listener);
+	private int type;
+	
+	public MapEvent(int type) {
 		eventList = new ArrayList<ActionEvent>();
+		this.type = type;
 	}
 	
 	public  void triggerEvnt(int type) {
@@ -87,21 +89,22 @@ public class MapEvent extends EventBase implements ActionListener {
 	}
 
 	@Override
-    public void update() {
+    public void excute() {
 		if (eventList.size() > 0) {
-			eventList.get(0).update();
+			eventList.get(0).excute();
 		} else {
-			this.onEnd();
 			this.listener.callback(this);
 		}
 	}
 	
 	@Override
 	public void callback(ActionEvent caller) {
+		caller.after();
 	    eventList.remove(0);
 	}
-	
-	private void onEnd() {
+    
+	@Override
+	public void after() {
 		if (this.eventcode == 203) {
 			this.eventcode = 0;
 			BaseView view =  viewMap.get("reisen");
@@ -114,5 +117,12 @@ public class MapEvent extends EventBase implements ActionListener {
 			eventMap[0][8] = 101;
 			MyGdxGame.addState(new TalkingView( MyGdxGame.getView(), "data/event/event02.json"));
 		}
+		ch.isAction = false;
 	}
+
+	@Override
+	public void before() {
+		triggerEvnt(type);
+	}
+
 }

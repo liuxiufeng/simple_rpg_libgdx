@@ -14,6 +14,7 @@ import com.mygdx.component.view.BaseView;
 import com.mygdx.game.view.IStateView;
 import com.mygdx.game.view.StateViewBase;
 import com.mygdx.model.Character;
+import com.mygdx.model.Hero;
 import com.mygdx.model.NPC;
 import com.mygdx.res.CharRes;
 import com.mygdx.res.EventMapRes;
@@ -22,8 +23,8 @@ import com.mygdx.utils.GlobalManager;
 import com.mygdx.utils.MapUtils;
 import com.mygdx.utils.OrthogonalTiledMapRendererWithViews;
 
-public class MapViewBase extends StateViewBase implements IStateView {
-	Character ch;
+public class MapViewBase extends StateViewBase {
+	Hero ch;
 	TiledMap tiledMap;
 	OrthographicCamera camera;
 	OrthogonalTiledMapRendererWithViews tiledMapRenderer;
@@ -88,9 +89,11 @@ public class MapViewBase extends StateViewBase implements IStateView {
 		NPC npc = new NPC();
 		CharRes.getReisen(npc);
 		npc.setCell(7, 3);
-		npc.setEventNum(202);
+		npc.setEventPath("data/event/event02.json");
 
 		views.put("reisen", npc);
+		
+		this.addListener();
 	}
 
 	@Override
@@ -112,6 +115,6 @@ public class MapViewBase extends StateViewBase implements IStateView {
 	
 	@Override
 	public void addListener() {
-		KeyProcess.addListner(ch);
+		this.addKeyListener(ch);
 	}
 }

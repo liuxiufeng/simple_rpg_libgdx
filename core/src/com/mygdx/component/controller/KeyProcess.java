@@ -10,8 +10,6 @@ public class KeyProcess {
 
 	private static List<Integer> keyUpList;
 
-	private static List<IKeyListener> keyListeners;
-
 	public static boolean isProcess;
 
 	static {
@@ -19,7 +17,6 @@ public class KeyProcess {
 		keyDownList = new ArrayList<Integer>();
 		keyUpList = new ArrayList<Integer>();
 
-		keyListeners = new ArrayList<IKeyListener>();
 		isProcess = false;
 	}
 
@@ -35,7 +32,12 @@ public class KeyProcess {
 		}
 	}
 
-	public static synchronized void process() {
+	public static synchronized void process(List<IKeyListener> keyListeners) {
+		if (keyListeners == null || keyListeners.size() < 1) {
+			clear();
+			return;
+		}
+		
 		isProcess = true;
 		for (int keycode : keyDownList) {
 			for (IKeyListener lis : keyListeners) {
@@ -68,16 +70,5 @@ public class KeyProcess {
 		keyDownList.clear();
 		keyUpList.clear();
 		pressedKeys.clear();
-		keyListeners.clear();
-	}
-
-	public static void addListner(IKeyListener listener) {
-		keyListeners.add(listener);
-	}
-
-	public static void removeListner(IKeyListener listener) {
-		if (keyListeners.contains(listener)) {
-			keyListeners.remove(listener);
-		}
 	}
 }

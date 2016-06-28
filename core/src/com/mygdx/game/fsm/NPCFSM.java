@@ -6,7 +6,7 @@ public enum NPCFSM {
     LEFT {
 		@Override
 		public void change(NPC npc) {
-		    npc.setTarget(npc.cellX + 1, npc.cellY);	
+
 		}
     };
 	

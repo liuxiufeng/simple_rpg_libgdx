@@ -1,8 +1,9 @@
 package com.mygdx.game.fsm;
 
+import com.mygdx.component.controller.IKeyListener;
 import com.mygdx.utils.Config;
 
-public class MainMenuFSM {
+public class MainMenuFSM implements IKeyListener {
 	private MainMenuState state;
 	
 	public MainMenuFSM() {
@@ -21,6 +22,17 @@ public class MainMenuFSM {
 	
 	public void setState(MainMenuState state) {
 		this.state = state;
+	}
+
+	@Override
+	public void keyDown(int keycode) {
+		this.keydown(keycode);
+	}
+
+	@Override
+	public void keyUp(int keycode) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -10,13 +10,12 @@ import com.mygdx.utils.MapUtils;
 public class TalkEvent extends EventBase {
 	private Character ch;
 	
-    public TalkEvent(Character ch, ActionListener listener) {
-    	super(listener);
+    public TalkEvent(Character ch) {
         this.ch = ch;	
     }
     
     @Override
-    public void update() {
+    public void excute() {
         Map<String, BaseView> views = MapUtils.viewMap;
         for(String key: views.keySet()) {
         	BaseView view = views.get(key);
@@ -27,4 +26,15 @@ public class TalkEvent extends EventBase {
         
         this.listener.callback(this);
     }
+
+	@Override
+	public void before() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void after() {
+		// TODO Auto-generated method stub
+	}
 }

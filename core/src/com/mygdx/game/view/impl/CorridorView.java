@@ -13,5 +13,6 @@ public class CorridorView extends MapViewBase{
 	@Override
 	public void onEnter() {
 	    tiledMap = new TmxMapLoader().load("map/corridor1.tmx");
+	    this.addListener();
 	}
 }

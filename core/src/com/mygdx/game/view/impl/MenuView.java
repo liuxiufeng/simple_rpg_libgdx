@@ -18,7 +18,7 @@ import com.mygdx.res.BackGroundRes;
 import com.mygdx.wigets.MyButton;
 import com.mygdx.wigets.OnClickListener;
 
-public class MenuView extends StateViewBase implements IStateView, IKeyListener{
+public class MenuView extends StateViewBase {
 	private Sprite bg;
 	private MyButton mbStart;
     private List<MyButton> buttons;
@@ -62,6 +62,8 @@ public class MenuView extends StateViewBase implements IStateView, IKeyListener{
         buttons.add(mbStart);
         
         mainmenuFSM = new MainMenuFSM();
+        
+        this.addListener();
 	}
 
 	@Override
@@ -74,20 +76,7 @@ public class MenuView extends StateViewBase implements IStateView, IKeyListener{
 	}
 
 	@Override
-	public void keyDown(int keycode) {
-		mainmenuFSM.keydown(keycode);
-	}
-
-	@Override
 	public void addListener() {
-	    KeyProcess.addListner(this);	
+	    this.addKeyListener(mainmenuFSM);	
 	}
-
-
-	@Override
-	public void keyUp(int keycode) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

@@ -24,9 +24,10 @@ import com.mygdx.game.view.IStateView;
 import com.mygdx.game.view.StateViewBase;
 import com.mygdx.utils.AssetManagerUtils;
 import com.mygdx.utils.Config;
+import com.mygdx.utils.GlobalManager;
 import com.mygdx.utils.TextureFlyweightFactory;
 
-public class TalkingView extends StateViewBase implements IStateView, IKeyListener {
+public class TalkingView extends StateViewBase implements IKeyListener {
 	private final int maxLen = 30;
 
 	Texture ttDilogBox;
@@ -128,6 +129,8 @@ public class TalkingView extends StateViewBase implements IStateView, IKeyListen
 
 	@Override
 	public void onEnter() {
+		GlobalManager.hero.pressedKey = 0;
+		
 		JSONObject node = nodes.getJSONObject(0);
 		ttDilogBox = new Texture("widgets/dialog1.png");
 		font = AssetManagerUtils.getInstance().getFont24();
@@ -136,6 +139,8 @@ public class TalkingView extends StateViewBase implements IStateView, IKeyListen
 
 		runScript(node);
 		mBatch = new SpriteBatch();
+        
+		this.addListener();
 	}
 
 	@Override
@@ -159,7 +164,7 @@ public class TalkingView extends StateViewBase implements IStateView, IKeyListen
 	private void ExitOrNext() {
 		switch (type) {
 		case "talk":
-			if (index == content.length - 1) {
+			if (index == content.length - 1 && len == content[index].length()) {
 				if (next == -1) {
 					MyGdxGame.removeState();
 				} else {
@@ -234,7 +239,7 @@ public class TalkingView extends StateViewBase implements IStateView, IKeyListen
 
 	@Override
 	public void addListener() {
-	    KeyProcess.addListner(this);	
+	    this.addKeyListener(this);	
 	}
 
 }
