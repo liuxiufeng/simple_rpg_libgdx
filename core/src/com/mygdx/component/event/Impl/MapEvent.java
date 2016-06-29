@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.mygdx.component.event.ActionEvent;
 import com.mygdx.component.event.ActionListener;
 import com.mygdx.component.view.BaseView;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.command.impl.EventEndCommand;
+import com.mygdx.game.command.impl.EventStartCommand;
 import com.mygdx.game.view.impl.CorridorView;
 import com.mygdx.game.view.impl.TalkingView;
 import com.mygdx.model.Character;
@@ -69,6 +72,8 @@ public class MapEvent extends EventBase implements ActionListener {
 			}
 			break;
 		}
+	    
+		new EventStartCommand().execute();
 		
 		this.eventcode = eventcode;
 	    ch.state = (ch.state / 10) * 10; 
@@ -105,6 +110,7 @@ public class MapEvent extends EventBase implements ActionListener {
     
 	@Override
 	public void after() {
+		new EventEndCommand().execute();
 		if (this.eventcode == 203) {
 			this.eventcode = 0;
 			BaseView view =  viewMap.get("reisen");
@@ -117,7 +123,6 @@ public class MapEvent extends EventBase implements ActionListener {
 			eventMap[0][8] = 101;
 			MyGdxGame.addState(new TalkingView( MyGdxGame.getView(), "data/event/event02.json"));
 		}
-		ch.isAction = false;
 	}
 
 	@Override

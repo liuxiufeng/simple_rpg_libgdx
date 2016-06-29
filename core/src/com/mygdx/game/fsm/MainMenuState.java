@@ -1,6 +1,7 @@
 package com.mygdx.game.fsm;
 
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.view.impl.CinemaViewBase;
 import com.mygdx.game.view.impl.MapViewBase;
 
 public enum MainMenuState {
@@ -18,7 +19,7 @@ public enum MainMenuState {
 		@Override
 		public void execute() {
 		    System.out.println("Start New Game");
-			MyGdxGame.switchState(new MapViewBase());
+			MyGdxGame.switchState(new CinemaViewBase());
 		}
 	};
 	

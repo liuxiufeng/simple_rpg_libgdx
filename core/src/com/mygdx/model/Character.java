@@ -1,10 +1,17 @@
 package com.mygdx.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.mygdx.component.event.ActionEvent;
 import com.mygdx.component.view.BaseView;
 import com.mygdx.utils.Config;
+import com.mygdx.utils.EventManager;
+import com.mygdx.utils.GlobalManager;
 
 public class Character extends BaseView  {
 	public static final int LEFT = 10;
@@ -15,6 +22,7 @@ public class Character extends BaseView  {
 	public static final int DOWNMOVE = 31;
 	public static final int UP = 40;
 	public static final int UPMOVE = 41;
+	protected List<ActionEvent> events = new ArrayList<ActionEvent>();
 
 	int speed;
 
@@ -54,8 +62,8 @@ public class Character extends BaseView  {
 		this.cellY = cellY;
 		this.targetX = cellX;
 		this.targetY = cellY;
-		this.x = cellX * Config.CELLWIDTH;
-		this.y = cellY * Config.CELLWIDTH;
+		this.x = this.cellX * Config.CELLWIDTH;
+		this.y = this.cellY * Config.CELLWIDTH;
 	}
 
 	public void setTarget(int cellX, int cellY) {
@@ -66,6 +74,12 @@ public class Character extends BaseView  {
 
 	public void update(float elapsedTime) {
 		stateTime += elapsedTime;
+		if (!GlobalManager.isEvent) {
+			for (ActionEvent event : events) {
+				EventManager.getInstance().addEvents(event);
+			}
+		}
+		events.clear();
 	}
 
 	public void draw(Batch batch) {
@@ -96,8 +110,10 @@ public class Character extends BaseView  {
 			currentFrame = down.getKeyFrame(stateTime, true);
 			break;
 		}
-
-		batch.draw(currentFrame, x, y);
+		Sprite sprite = new Sprite(currentFrame);
+		sprite.setAlpha(this.alpha);
+		sprite.setPosition(x, y);
+		sprite.draw(batch);
 	}
 
 	public Animation getRight() {

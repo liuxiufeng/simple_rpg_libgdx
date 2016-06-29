@@ -10,17 +10,37 @@ public class StateViewBase implements IStateView {
 	protected float stateTime;
 	protected final float FRAME = 0.033f;
     protected List<IKeyListener> keyListeners;
+    protected List<IKeyListener> removeListeners;
 	
 	public StateViewBase(){
 		stateTime = 0;
 		keyListeners = new ArrayList<IKeyListener>();
+		removeListeners = new ArrayList<IKeyListener>();
 	}
 	
-	protected void addKeyListener(IKeyListener keyListener) {
-	    this.keyListeners.add(keyListener);
+	public void addKeyListener(IKeyListener keyListener) {
+		if (!this.keyListeners.contains(keyListener)) {
+			this.keyListeners.add(keyListener);
+		}
+	}
+	
+	public void removeKeyListners(IKeyListener keyListener) {
+	    if (keyListeners.contains(keyListener) && !removeListeners.contains(keyListener))	{
+	    	removeListeners.remove(keyListener);
+	    }
 	}
 	
 	public List<IKeyListener> getKeyListeners() {
+		if (removeListeners.size() > 0) {
+			for (IKeyListener lis : removeListeners) {
+				if (this.keyListeners.contains(lis)) {
+					this.keyListeners.remove(lis);
+				}
+			}
+		}
+		
+		removeListeners.clear();
+		
 		return this.keyListeners;
 	}
 

@@ -5,18 +5,17 @@ import com.mygdx.component.event.Impl.MapEvent;
 import com.mygdx.component.event.Impl.MoveEvent;
 import com.mygdx.component.event.Impl.TalkEvent;
 import com.mygdx.utils.Config;
-import com.mygdx.utils.EventManager;
 
 public class Hero extends Character implements IKeyListener {
 	private TalkEvent talkevent = new TalkEvent(this);
-
+	
 	public Hero() {
 		super();
 	}
 
 	@Override
 	public void update(float elapsedTime) {
-		stateTime += elapsedTime;
+	    super.update(elapsedTime);	
 		updateMove();
 	}
 
@@ -40,7 +39,7 @@ public class Hero extends Character implements IKeyListener {
 			}
 
 			if (this.targetX != this.cellX || this.targetY != this.cellY) {
-				EventManager.getInstance().addEvents(new MoveEvent(this, (this.targetX - this.cellX) * Config.CELLWIDTH,
+				events.add(new MoveEvent(this, (this.targetX - this.cellX) * Config.CELLWIDTH,
 						(this.targetY - this.cellY) * Config.CELLWIDTH, this.speed));
 			}
 		}
@@ -63,8 +62,8 @@ public class Hero extends Character implements IKeyListener {
 		}
 
 		if (keycode == Config.KEYCONFIRM) {
-			EventManager.getInstance().addEvents(talkevent);
-			EventManager.getInstance().addEvents(new MapEvent(MapEvent.TYPE_KEY));
+			events.add(talkevent);
+			events.add(new MapEvent(MapEvent.TYPE_KEY));
 		}
 	}
 

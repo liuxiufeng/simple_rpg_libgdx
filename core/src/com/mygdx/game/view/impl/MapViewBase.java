@@ -50,7 +50,9 @@ public class MapViewBase extends StateViewBase {
 		}
 
 		MapLayer objectLayer = tiledMap.getLayers().get("Collisions");
-		collisionObjecs = objectLayer.getObjects();
+		if (objectLayer != null) {
+			collisionObjecs = objectLayer.getObjects();
+		}
 		
 		MapUtils.collisionObjecs = collisionObjecs;
 		MapUtils.viewMap = views;

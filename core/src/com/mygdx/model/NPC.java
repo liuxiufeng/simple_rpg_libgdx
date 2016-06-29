@@ -1,7 +1,6 @@
 package com.mygdx.model;
 
-import com.mygdx.game.MyGdxGame;
-import com.mygdx.game.view.impl.TalkingView;
+import com.mygdx.component.event.Impl.TalkingEffectEvent;
 
 public class NPC extends Character {
 	private String eventPath;
@@ -24,7 +23,7 @@ public class NPC extends Character {
 		}
 		
 		if (eventPath != null && !"".equals(eventPath)) {
-			MyGdxGame.addState(new TalkingView(MyGdxGame.getView(), this.eventPath));
+		    events.add(new TalkingEffectEvent(eventPath));	
 		}
 	}
 

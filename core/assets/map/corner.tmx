@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" nextobjectid="1">
+ <tileset firstgid="1" name="tilea3" tilewidth="16" tileheight="16" tilecount="512" columns="32">
+  <image source="tilea3.png" width="512" height="256"/>
+ </tileset>
+ <tileset firstgid="513" name="tilec" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
+  <image source="tilec.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="1537" name="tilea5" tilewidth="16" tileheight="16" tilecount="512" columns="16">
+  <image source="tilea5.png" width="256" height="512"/>
+ </tileset>
+ <tileset firstgid="2049" name="tileb" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
+  <image source="tileb.png" width="512" height="512"/>
+ </tileset>
+ <layer name="ground" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztj7cNAlEQBRcj+sA0gmmEg0YwydEBZJhGMI1gCmECJJ6A8NjoBaMJ/krvT9mKWEH5ci0i6tAQN+P9XrXXsBG32epAV9yL77uq/PmfPlsDGIpHif1jtgqYiKeJ/TO25rAQLxP7t2ztYC8+JPYf2TrBWXxxf1r/la0b3MWPxP5s/6vL/e53v/vd7373u9/97v/lJ8TPWHM=
+  </data>
+ </layer>
+ <layer name="layer2" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzt07EJACAQQ9Grb/+1tNE1tNEBvA0iggjyX5MmpIsZAADvJTfLrvOWFtvddQL4T4lvV/Hvnc6pEbtTbO90AEBZxMoZgw==
+  </data>
+ </layer>
+ <layer name="layer3" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20PBxQAAADwbhAAAAE=
+  </data>
+ </layer>
+</map>

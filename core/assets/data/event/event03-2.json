@@ -1,0 +1,33 @@
+[
+    {
+        "id": 0, 
+        "type": "talk", 
+        "name": "玛丽", 
+        "leftimage": "char/mary_cap.png", 
+        "rightimage": "",
+        "sound": "", 
+        "context": "对不起对不起,我没有看到有人", 
+        "next": 1
+    },
+    {
+        "id": 1, 
+        "type": "talk", 
+        "name": "铃仙", 
+        "leftimage": "char/mary_cap.png", 
+        "rightimage": "char/reisen.png",
+        "sound": "", 
+        "context": "啊,没关系的,有急事吗,快点去吧", 
+        "next": 2
+    },
+    
+    {
+        "id": 2, 
+        "type": "talk", 
+        "name": "玛丽", 
+        "leftimage": "char/mary_cap.png", 
+        "rightimage": "char/reisen.png",
+        "sound": "", 
+        "context": "谢谢您,失礼了", 
+        "next": -1
+    },
+]

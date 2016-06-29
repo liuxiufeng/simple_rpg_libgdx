@@ -9,10 +9,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.component.controller.KeyProcess;
-import com.mygdx.game.view.IStateView;
+import com.mygdx.component.event.Impl.ScreenFadeInEffect;
 import com.mygdx.game.view.StateViewBase;
 import com.mygdx.game.view.impl.LogoView;
-import com.mygdx.model.Character;
 import com.mygdx.model.Hero;
 import com.mygdx.res.CharRes;
 import com.mygdx.utils.AssetManagerUtils;
@@ -47,7 +46,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		KeyProcess.process(view.getKeyListeners());
-		EventManager.getInstance().process();
 		
 		if (AssetManagerUtils.getInstance().update()) {
 			view.update(Gdx.graphics.getDeltaTime());
@@ -60,6 +58,10 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 					Gdx.graphics.getHeight() / 2);
 			batch.end();
 		}
+		EventManager.getInstance().process();
+		batch.begin();
+		EventManager.getInstance().render(batch);
+		batch.end();
 	}
 
 	public static void switchState(final StateViewBase view) {
@@ -67,6 +69,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		preView.onExit();
 
 		viewStack.push(view);
+		EventManager.getInstance().addEvents(new ScreenFadeInEffect(1.0f));
 	}
 
 	public static void addState(final StateViewBase view) {
@@ -78,7 +81,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		preView.onExit();
 	}
 	
-	public static IStateView getView() {
+	public static StateViewBase getView() {
 		return viewStack.firstElement();
 	}
 

@@ -8,4 +8,5 @@ public class GlobalManager {
     public static Hero hero;
     public static MyGdxGame game;
     public static int eventState;
+    public static boolean isEvent;
 }

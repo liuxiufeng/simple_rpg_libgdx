@@ -4,9 +4,9 @@
         "type": "talk", 
         "name": "玛丽", 
         "leftimage": "char/mary_cap.png", 
-        "rightimage": "char/reisen.png",
+        "rightimage": "",
         "sound": "", 
-        "context": "铃仙，呀哈罗", 
+        "context": "这封信要交到报社..", 
         "next": -1
     },
 ]

@@ -11,6 +11,8 @@ public abstract class BaseView {
 	
 	public float height;
 	
+	public float alpha = 1.0f;
+	
     public abstract void update(float elapsedTime);
 	
 	public abstract void draw(Batch batch);
