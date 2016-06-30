@@ -110,7 +110,10 @@ public class MapEvent extends EventBase implements ActionListener {
     
 	@Override
 	public void after() {
-		new EventEndCommand().execute();
+		if (this.eventcode != 0) {
+			new EventEndCommand().execute();
+		}
+
 		if (this.eventcode == 203) {
 			this.eventcode = 0;
 			BaseView view =  viewMap.get("reisen");

@@ -84,6 +84,7 @@ public class MapViewBase extends StateViewBase {
 
 	@Override
 	public void onEnter() {
+		//System.out.println("MapViewBase");
 		ch.setCell(6, 11);
 		tiledMap = new TmxMapLoader().load("map/room1.tmx");
 		eventMap = EventMapRes.getEventMap("room1");

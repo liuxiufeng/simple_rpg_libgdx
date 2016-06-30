@@ -58,7 +58,6 @@ public class TalkingEffectEvent extends EffectEventBase implements IKeyListener 
 			e.printStackTrace();
 		}
 		nodes = JSON.parseArray(jsonStr);
-		this.before();
 	}
 
 	@Override

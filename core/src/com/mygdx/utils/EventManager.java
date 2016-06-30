@@ -6,6 +6,7 @@ import java.util.List;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.mygdx.component.event.ActionEvent;
 import com.mygdx.component.event.ActionListener;
+import com.mygdx.component.event.Impl.CinemaEvent;
 import com.mygdx.component.event.Impl.EffectEventBase;
 import com.mygdx.component.event.Impl.TalkingEffectEvent;
 import com.mygdx.game.command.impl.EventEndCommand;
@@ -46,6 +47,9 @@ public class EventManager implements ActionListener {
 
 		for (ActionEvent event : removeEvents) {
 			if (events.contains(event)) {
+				if (event instanceof TalkingEffectEvent) {
+				    new EventEndCommand().execute();
+				}
 				events.remove(event);
 			}
 		}
@@ -75,9 +79,8 @@ public class EventManager implements ActionListener {
 	@Override
 	public void callback(ActionEvent caller) {
 		caller.after();
-		if (caller instanceof TalkingEffectEvent) {
-		    new EventEndCommand().execute();
-		}
+
+		
 		if (events.contains(caller) && !removeEvents.contains(caller)) {
 			removeEvents.add(caller);
 		}

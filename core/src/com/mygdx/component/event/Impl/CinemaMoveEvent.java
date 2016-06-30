@@ -30,11 +30,6 @@ public class CinemaMoveEvent extends EventBase {
 		this.count = 0;
 		stateTime = 0;
 		this.result = true;
-
-		if (view instanceof Character) {
-			Character ch = (Character) view;
-			ch.isAction = true;
-		}
 	}
 
 	public CinemaMoveEvent(BaseView view, float offset_x, float offset_y, int speed, ActionListener listener) {
@@ -47,11 +42,6 @@ public class CinemaMoveEvent extends EventBase {
 
 		this.listener = listener;
 		this.result = true;
-
-		if (view instanceof Character) {
-			Character ch = (Character) view;
-			ch.isAction = true;
-		}
 	}
 
 	@Override

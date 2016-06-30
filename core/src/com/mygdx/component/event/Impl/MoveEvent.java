@@ -29,14 +29,14 @@ public class MoveEvent extends EventBase {
 		this.speed = speed;
 		this.count = 0;
 		stateTime = 0;
-        this.result = true;
-		
+		this.result = true;
+
 		if (view instanceof Character) {
 			Character ch = (Character) view;
 			ch.isAction = true;
 		}
 	}
-	
+
 	public MoveEvent(BaseView view, float offset_x, float offset_y, int speed, ActionListener listener) {
 		this.view = view;
 		this.offset_x = offset_x;
@@ -44,10 +44,10 @@ public class MoveEvent extends EventBase {
 		this.speed = speed;
 		this.count = 0;
 		stateTime = 0;
-        
+
 		this.listener = listener;
-	    this.result = true;
-		
+		this.result = true;
+
 		if (view instanceof Character) {
 			Character ch = (Character) view;
 			ch.isAction = true;
@@ -103,12 +103,13 @@ public class MoveEvent extends EventBase {
 		chRect.height = view.height;
 
 		result = true;
-
-		for (MapObject obj : MapUtils.collisionObjecs) {
-			if (obj instanceof RectangleMapObject) {
-				Rectangle rect = ((RectangleMapObject) obj).getRectangle();
-				if (RectUtils.isOverlap(chRect, rect)) {
-					result = false;
+		if (MapUtils.collisionObjecs != null) {
+			for (MapObject obj : MapUtils.collisionObjecs) {
+				if (obj instanceof RectangleMapObject) {
+					Rectangle rect = ((RectangleMapObject) obj).getRectangle();
+					if (RectUtils.isOverlap(chRect, rect)) {
+						result = false;
+					}
 				}
 			}
 		}
@@ -144,7 +145,7 @@ public class MoveEvent extends EventBase {
 			Character ch = (Character) view;
 			ch.state = (ch.state / 10) * 10;
 		}
-		
+
 		if (view instanceof Hero) {
 			Character ch = (Character) view;
 			ch.setCell(ch.targetX, ch.targetY);

@@ -5,6 +5,7 @@ import com.mygdx.component.event.Impl.MapEvent;
 import com.mygdx.component.event.Impl.MoveEvent;
 import com.mygdx.component.event.Impl.TalkEvent;
 import com.mygdx.utils.Config;
+import com.mygdx.utils.GlobalManager;
 
 public class Hero extends Character implements IKeyListener {
 	private TalkEvent talkevent = new TalkEvent(this);
@@ -21,7 +22,7 @@ public class Hero extends Character implements IKeyListener {
 
 	public void updateMove() {
 		int changeState = 0;
-		if (!this.isAction) {
+		if (!this.isAction && !GlobalManager.isEvent) {
 			if (this.pressedKey == Config.KEYUP) {
 				changeState = UPMOVE;
 				this.setTarget(this.cellX, this.cellY + 1);
@@ -38,7 +39,7 @@ public class Hero extends Character implements IKeyListener {
 				this.state = (this.state / 10) * 10;
 			}
 
-			if (this.targetX != this.cellX || this.targetY != this.cellY) {
+			if ((this.targetX != this.cellX || this.targetY != this.cellY)) {
 				events.add(new MoveEvent(this, (this.targetX - this.cellX) * Config.CELLWIDTH,
 						(this.targetY - this.cellY) * Config.CELLWIDTH, this.speed));
 			}

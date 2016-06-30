@@ -9,6 +9,8 @@ import com.mygdx.component.event.ActionEvent;
 import com.mygdx.component.event.ActionListener;
 import com.mygdx.component.view.BaseView;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.command.impl.EventEndCommand;
+import com.mygdx.game.command.impl.EventStartCommand;
 import com.mygdx.game.view.impl.MapViewBase;
 import com.mygdx.model.Hero;
 import com.mygdx.model.NPC;
@@ -23,6 +25,7 @@ public class CinemaEvent extends EffectEventBase implements ActionListener {
 	private List<ActionEvent> removeEvents;
 
 	private Map<String, BaseView> viewMap;
+	
 
 	public CinemaEvent() {
 		eventList = new ArrayList<List<ActionEvent>>();
@@ -31,6 +34,8 @@ public class CinemaEvent extends EffectEventBase implements ActionListener {
 
 	@Override
 	public void before() {
+		new EventStartCommand().execute();
+		
 		viewMap = MapUtils.viewMap;
 		
 		BaseView view = viewMap.get("reisen");
@@ -73,6 +78,11 @@ public class CinemaEvent extends EffectEventBase implements ActionListener {
 		moveEvent = new CinemaMoveEvent(hero, 0, -5 * Config.CELLWIDTH, 5 * 5);
         moveEvent.setListener(this);
         events.add(moveEvent);
+        
+        /*fadeOut = new ScreenFadeOutEffect(25 * Config.FRAMETIME);
+        fadeOut.setListener(this);
+        events.add(fadeOut);*/
+        
         eventList.add(events);
         
 	}
@@ -80,7 +90,7 @@ public class CinemaEvent extends EffectEventBase implements ActionListener {
 	@Override
 	public void excute() {
 		if (eventList.size() == 0) {
-			this.callback(this);
+			this.listener.callback(this);
 			return;
 		}
 
@@ -104,6 +114,9 @@ public class CinemaEvent extends EffectEventBase implements ActionListener {
 
 	@Override
 	public void after() {
+		new EventEndCommand().execute();
+		Hero hero = GlobalManager.hero;
+		hero.alpha = 0.5f;
 	    MyGdxGame.switchState(new MapViewBase());
 	}
 
@@ -122,7 +135,6 @@ public class CinemaEvent extends EffectEventBase implements ActionListener {
 
 	@Override
 	public void callback(ActionEvent caller) {
-		caller.after();
 		if (eventList != null && eventList.size() > 0) {
 			if (eventList.get(0).contains(caller)) {
 				removeEvents.add(caller);

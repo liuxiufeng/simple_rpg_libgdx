@@ -78,6 +78,10 @@ public class Character extends BaseView  {
 			for (ActionEvent event : events) {
 				EventManager.getInstance().addEvents(event);
 			}
+		} else {
+			if(this.isAction == true) {
+				this.isAction = false;
+			}
 		}
 		events.clear();
 	}
