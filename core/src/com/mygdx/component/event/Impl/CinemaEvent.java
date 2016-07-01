@@ -79,9 +79,9 @@ public class CinemaEvent extends EffectEventBase implements ActionListener {
         moveEvent.setListener(this);
         events.add(moveEvent);
         
-        /*fadeOut = new ScreenFadeOutEffect(25 * Config.FRAMETIME);
+        ScreenFadeOutEffect fadeOut = new ScreenFadeOutEffect(26 * Config.FRAMETIME);
         fadeOut.setListener(this);
-        events.add(fadeOut);*/
+        events.add(fadeOut);
         
         eventList.add(events);
         
@@ -89,27 +89,12 @@ public class CinemaEvent extends EffectEventBase implements ActionListener {
 
 	@Override
 	public void excute() {
-		if (eventList.size() == 0) {
-			this.listener.callback(this);
-			return;
-		}
-
 		List<ActionEvent> events = eventList.get(0);
 		for (ActionEvent event : events) {
 			event.excute();
 		}
 		
-		for (ActionEvent event : removeEvents) {
-			if (events.contains(event)) {
-				events.remove(event);
-			}
-		}
 		
-		if (events.size() == 0) {
-			eventList.remove(0);
-		}
-		
-		removeEvents.clear();
 	}
 
 	@Override
@@ -122,19 +107,35 @@ public class CinemaEvent extends EffectEventBase implements ActionListener {
 
 	@Override
 	public void render(Batch batch) {
-		if (eventList.size() == 0) {
-			return;
-		}
 		List<ActionEvent> events = eventList.get(0);
 		for (ActionEvent event : events) {
 		     if (event instanceof EffectEventBase) {
 		    	 ((EffectEventBase) event).render(batch);
 		     }
 		}
+		
+		for (ActionEvent event : removeEvents) {
+			if (events.contains(event)) {
+				events.remove(event);
+			}
+			event.after();
+		}
+		
+		if (events.size() == 0) {
+			eventList.remove(0);
+		}
+		
+		removeEvents.clear();
+		
+		if (eventList.size() == 0) {
+			this.listener.callback(this);
+			return;
+		}
 	}
 
 	@Override
 	public void callback(ActionEvent caller) {
+		System.out.println(caller.getClass().getName());
 		if (eventList != null && eventList.size() > 0) {
 			if (eventList.get(0).contains(caller)) {
 				removeEvents.add(caller);

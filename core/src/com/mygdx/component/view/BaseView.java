@@ -16,4 +16,6 @@ public abstract class BaseView {
     public abstract void update(float elapsedTime);
 	
 	public abstract void draw(Batch batch);
+	
+	public abstract void dispose();
 }

@@ -168,4 +168,9 @@ public class Character extends BaseView  {
 		this.height = height;
 	}
 
+	@Override
+	public void dispose() {
+
+	}
+
 }
