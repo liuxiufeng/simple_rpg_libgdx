@@ -9,7 +9,6 @@ import com.mygdx.component.view.BaseView;
 import com.mygdx.model.Character;
 import com.mygdx.model.Hero;
 import com.mygdx.utils.Config;
-import com.mygdx.utils.EventManager;
 import com.mygdx.utils.MapUtils;
 import com.mygdx.utils.RectUtils;
 
@@ -50,7 +49,7 @@ public class CinemaMoveEvent extends EventBase {
 			listener.callback(this);
 			return;
 		}
-
+		
 		if (view instanceof Character) {
 			Character ch = (Character) view;
 			if (offset_x > 0) {

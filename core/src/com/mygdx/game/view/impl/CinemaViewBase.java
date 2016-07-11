@@ -9,8 +9,10 @@ import com.mygdx.utils.GlobalManager;
 
 public class CinemaViewBase extends MapViewBase {
 	private boolean isEventSend;
-	public CinemaViewBase() {
+	private String path;
+	public CinemaViewBase(String path) {
 		super();
+		this.path = path;
 	}
 	
 	@Override
@@ -32,7 +34,7 @@ public class CinemaViewBase extends MapViewBase {
 		super.update(elapsedTime);
 		
 		if (!isEventSend && !GlobalManager.isEvent) {
-			EventManager.getInstance().addEvents(new CinemaEvent());
+			EventManager.getInstance().addEvents(new CinemaEvent(this.path));
 			isEventSend = true;
 		}
 		

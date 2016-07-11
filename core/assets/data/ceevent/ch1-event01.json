@@ -1,0 +1,63 @@
+{
+    "before": [
+        [
+            {
+                "type": "talk",
+                "path": "data/event/event03-1.json"
+            }
+        ],
+        [
+            {
+                "type": "move",
+                "chr": "hero",
+                "offset_x": "0",
+                "offset_y": "-5",
+                "speed": "25"
+            },
+            {
+                "type": "move",
+                "chr": "reisen",
+                "offset_x": "-5",
+                "offset_y": "0",
+                "speed": "25"
+            }
+        ],
+        [
+            {
+                "type": "state",
+                "chr": "hero",
+                "state": "right"
+            }
+        ],
+        [
+            {
+                "type": "talk",
+                "path": "data/event/event03-2.json"
+            }
+        ],
+        [
+            {
+                "type": "move",
+                "chr": "hero",
+                "offset_x": "0",
+                "offset_y": "-5",
+                "speed": "25"
+            },
+            {
+                "type": "fadeout",
+                "time": "26"
+            }
+        ]
+    ],
+    "after": [
+        {
+            "type": "alpha",
+            "id": "hero",
+            "value": "0.5"
+        },
+        {
+            "type": "switch",
+            "path": ""
+        }
+    ]
+}

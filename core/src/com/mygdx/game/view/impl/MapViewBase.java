@@ -41,9 +41,8 @@ public class MapViewBase extends StateViewBase {
 		views = new HashMap<String, BaseView>();
 
 		this.onEnter();
-
+		views.put("hero", ch);
 		tiledMapRenderer = new OrthogonalTiledMapRendererWithViews(tiledMap);
-		tiledMapRenderer.addCharacter(ch);
 
 		for (String key : views.keySet()) {
 			tiledMapRenderer.addCharacter(views.get(key));
@@ -84,11 +83,11 @@ public class MapViewBase extends StateViewBase {
 
 	@Override
 	public void onEnter() {
-		//System.out.println("MapViewBase");
-		ch.setCell(6, 11);
 		tiledMap = new TmxMapLoader().load("map/room1.tmx");
 		eventMap = EventMapRes.getEventMap("room1");
 		
+		ch.setCell(6, 11);
+
 		NPC npc = new NPC();
 		CharRes.getReisen(npc);
 		npc.setCell(7, 3);

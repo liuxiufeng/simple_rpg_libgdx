@@ -117,7 +117,9 @@ public class MoveEvent extends EventBase {
 		if (result) {
 			for (String key : MapUtils.viewMap.keySet()) {
 				BaseView view = MapUtils.viewMap.get(key);
-
+				if (view instanceof Hero) {
+                	continue;
+                }
 				Rectangle viewRect = new Rectangle();
 				viewRect.x = view.x;
 				viewRect.y = view.y;
