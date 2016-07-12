@@ -148,7 +148,7 @@ public class CinemaEvent extends EffectEventBase implements ActionListener {
 				BaseView view = viewMap.get(action.getString("id"));
 				view.alpha = action.getFloatValue("value");
 			} else if (A_SWITCH.equals(type)) {
-				MyGdxGame.switchState(new MapViewBase());
+				MyGdxGame.switchState(new MapViewBase("map01"));
 			}
 		}
 	}

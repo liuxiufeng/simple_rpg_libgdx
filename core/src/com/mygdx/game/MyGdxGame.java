@@ -69,7 +69,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		preView.onExit();
 
 		viewStack.push(view);
-		EventManager.getInstance().addEvents(new ScreenFadeInEffect(1.0f));
+		EventManager.getInstance().addEvents(new ScreenFadeInEffect(2.0f));
 	}
 
 	public static void addState(final StateViewBase view) {

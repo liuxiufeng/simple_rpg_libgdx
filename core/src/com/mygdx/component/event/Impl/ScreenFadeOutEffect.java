@@ -34,7 +34,11 @@ public class ScreenFadeOutEffect extends EffectEventBase {
 	@Override
 	public void excute() {
 	    this.statetime += Gdx.graphics.getDeltaTime();
-	    black.setAlpha(1.0f * (statetime/ duration));
+	    float per = this.statetime / this.duration;
+	    if (per > 1.0f) {
+	    	per = 1.0f;
+	    }
+	    black.setAlpha(1.0f * per);
 	    if (this.statetime > this.duration) {
 	    	this.listener.callback(this);
 	    	return;

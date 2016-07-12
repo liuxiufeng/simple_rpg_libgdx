@@ -6,8 +6,8 @@ import com.mygdx.res.EventMapRes;
 
 public class CorridorView extends MapViewBase{
 
-	public CorridorView() {
-		super();
+	public CorridorView(String mapid) {
+		super(mapid);
 	}
 	
 	@Override

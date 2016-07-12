@@ -19,7 +19,7 @@ public enum MainMenuState {
 		@Override
 		public void execute() {
 		    System.out.println("Start New Game");
-			MyGdxGame.switchState(new CinemaViewBase("data/ceevent/ch1-event01.json"));
+			MyGdxGame.switchState(new CinemaViewBase("data/ceevent/ch1-event01.json", "corner"));
 		}
 	};
 	

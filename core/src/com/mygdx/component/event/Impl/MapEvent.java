@@ -88,7 +88,7 @@ public class MapEvent extends EventBase implements ActionListener {
 		if (eventcode == 101) {
 			if (GlobalManager.hero.state == Character.DOWN || GlobalManager.hero.state == Character.DOWNMOVE) {
 				GlobalManager.hero.setCell(2, 8);
-				MyGdxGame.switchState(new CorridorView());
+				MyGdxGame.switchState(new CorridorView(""));
 			}
 		}
 	}

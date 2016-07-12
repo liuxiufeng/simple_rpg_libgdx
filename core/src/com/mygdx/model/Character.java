@@ -167,7 +167,42 @@ public class Character extends BaseView  {
 	public void setHeight(float height) {
 		this.height = height;
 	}
-
+    
+	public void setState(String newState) {
+		int state = 0;
+		switch (newState) {
+		case "right":
+			state = Character.RIGHT;
+			break;
+		case "rightmove":
+			state = Character.RIGHTMOVE;
+			break;
+		case "left":
+			state = Character.LEFT;
+			break;
+		case "leftmove":
+			state = Character.LEFTMOVE;
+			break;
+		case "up":
+			state = Character.UP;
+			break;
+		case "upmove":
+			state = Character.UPMOVE;
+			break;
+		case "down":
+			state = Character.DOWN;
+			break;
+		case "downmove":
+			state = Character.DOWNMOVE;
+			break;
+		default:
+			state = Character.DOWN;
+		}
+		System.out.println(state);
+		
+		this.state = state;
+	}
+	
 	@Override
 	public void dispose() {
 

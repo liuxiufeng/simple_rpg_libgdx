@@ -1,32 +1,21 @@
 package com.mygdx.game.view.impl;
 
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.mygdx.component.event.Impl.CinemaEvent;
-import com.mygdx.model.NPC;
-import com.mygdx.res.CharRes;
 import com.mygdx.utils.EventManager;
 import com.mygdx.utils.GlobalManager;
 
 public class CinemaViewBase extends MapViewBase {
 	private boolean isEventSend;
 	private String path;
-	public CinemaViewBase(String path) {
-		super();
+	public CinemaViewBase(String path, String mapid) {
+		super(mapid);
 		this.path = path;
 	}
 	
 	@Override
 	public void onEnter() {
 		isEventSend = false;
-		
-	    tiledMap = new TmxMapLoader().load("map/corner.tmx");
-	    this.ch.setCell(1, 15);
-	    
-	    NPC npc = new NPC();
-		CharRes.getReisen(npc);
-		npc.setCell(7, 10);
-		
-		views.put("reisen", npc);
+	    super.onEnter();	
 	}
 	
 	@Override
@@ -37,6 +26,11 @@ public class CinemaViewBase extends MapViewBase {
 			EventManager.getInstance().addEvents(new CinemaEvent(this.path));
 			isEventSend = true;
 		}
+		
+	}
+	
+	@Override
+	public void addListener() {
 		
 	}
 }

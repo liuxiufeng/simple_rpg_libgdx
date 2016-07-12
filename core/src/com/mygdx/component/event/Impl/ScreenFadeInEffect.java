@@ -33,18 +33,18 @@ public class ScreenFadeInEffect extends EffectEventBase {
 
 	@Override
 	public void excute() {
+	    black.setAlpha(1.0f * (statetime/ duration));
 	    this.statetime -= Gdx.graphics.getDeltaTime();
 	    if (this.statetime < 0) {
 	    	this.listener.callback(this);
 	    	return;
 	    }
-	    black.setAlpha(1.0f * (statetime/ duration));
 	    
 	}
 
 	@Override
 	public void after() {
-	   black.getTexture().dispose();
+	   //black.getTexture().dispose();
 	   new EventEndCommand().execute();
 	}
 

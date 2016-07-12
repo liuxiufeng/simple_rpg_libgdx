@@ -1,0 +1,37 @@
+{
+    "map01": {
+        "tiledmap": "map/room1.tmx",
+        "eventmap": "room1",
+        "hero": {
+            "state": "down",
+            "x": "6",
+            "y": "11"
+        },
+        "npc": [
+            {
+                "name": "reisen",
+                "x": "7",
+                "y": "3",
+                "state": "down",
+                "eventpath": "data/event/event02.json"
+            }
+        ]
+    },
+    
+    "corner": {
+        "tiledmap": "map/corner.tmx",
+        "hero": {
+            "state": "down",
+            "x": "1",
+            "y": "15"
+        },
+        "npc": [
+            {
+                "name": "reisen",
+                "x": "7",
+                "y": "10",
+                "state": "down"
+            }
+        ]
+    }
+}

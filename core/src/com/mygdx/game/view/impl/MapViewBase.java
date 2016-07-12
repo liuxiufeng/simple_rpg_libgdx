@@ -2,6 +2,9 @@ package com.mygdx.game.view.impl;
 
 import java.util.HashMap;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,16 +12,13 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.mygdx.component.controller.KeyProcess;
 import com.mygdx.component.view.BaseView;
-import com.mygdx.game.view.IStateView;
 import com.mygdx.game.view.StateViewBase;
-import com.mygdx.model.Character;
 import com.mygdx.model.Hero;
 import com.mygdx.model.NPC;
-import com.mygdx.res.CharRes;
+import com.mygdx.res.Assert;
+import com.mygdx.res.CharFactory;
 import com.mygdx.res.EventMapRes;
-import com.mygdx.utils.EventManager;
 import com.mygdx.utils.GlobalManager;
 import com.mygdx.utils.MapUtils;
 import com.mygdx.utils.OrthogonalTiledMapRendererWithViews;
@@ -31,8 +31,20 @@ public class MapViewBase extends StateViewBase {
 	int eventMap[][];
 	MapObjects collisionObjecs;
 	HashMap<String, BaseView> views;
+	String mapid;
+	JSONObject mapinfo;
 
-	public MapViewBase() {
+	public MapViewBase(String mapid) {
+		this.mapid = mapid;
+		String json;
+		try {
+			json = new String(Gdx.files.internal(Assert.mapinfo).readBytes(), "UTF-8");
+			mapinfo = JSON.parseObject(json);
+			mapinfo = (JSONObject) mapinfo.getJSONObject(mapid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		ch = GlobalManager.hero;
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
@@ -52,7 +64,7 @@ public class MapViewBase extends StateViewBase {
 		if (objectLayer != null) {
 			collisionObjecs = objectLayer.getObjects();
 		}
-		
+
 		MapUtils.collisionObjecs = collisionObjecs;
 		MapUtils.viewMap = views;
 		MapUtils.eventMap = eventMap;
@@ -83,18 +95,25 @@ public class MapViewBase extends StateViewBase {
 
 	@Override
 	public void onEnter() {
-		tiledMap = new TmxMapLoader().load("map/room1.tmx");
-		eventMap = EventMapRes.getEventMap("room1");
-		
-		ch.setCell(6, 11);
+		tiledMap = new TmxMapLoader().load(mapinfo.getString("tiledmap"));
+		if (mapinfo.containsKey("eventmap")) {
+			eventMap = EventMapRes.getEventMap(mapinfo.getString("eventmap"));
+		}
+		JSONObject jobj = mapinfo.getJSONObject("hero");
+		ch.setCell(jobj.getIntValue("x"), jobj.getIntValue("y"));
+		ch.setState(jobj.getString("state"));
 
-		NPC npc = new NPC();
-		CharRes.getReisen(npc);
-		npc.setCell(7, 3);
-		npc.setEventPath("data/event/event02.json");
+		JSONArray npcArr = mapinfo.getJSONArray("npc");
+		for (Object obj : npcArr) {
+			JSONObject no = (JSONObject) obj;
+			NPC npc = new NPC();
+			CharFactory.getInstance().getChar(no.getString("name"), npc);
+			npc.setCell(no.getIntValue("x"), no.getIntValue("y"));
+			npc.setEventPath(no.getString("eventpath"));
+			npc.setState(no.getString("state"));
+			views.put(no.getString("name"), npc);
+		}
 
-		views.put("reisen", npc);
-		
 		this.addListener();
 	}
 
@@ -114,7 +133,7 @@ public class MapViewBase extends StateViewBase {
 	public MapObjects getMapObjects() {
 		return this.collisionObjecs;
 	}
-	
+
 	@Override
 	public void addListener() {
 		this.addKeyListener(ch);
